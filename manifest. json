@@ -1,0 +1,26 @@
+{
+  "name": "NDULE+",
+  "short_name": "NDULE+",
+  "description": "La plateforme de streaming musical de Goma.",
+  "start_url": "/ndule-/",
+  "scope": "/ndule-/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#07070a",
+  "theme_color": "#8b5cf6",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "/ndule-/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/ndule-/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
