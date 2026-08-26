@@ -1,13 +1,46 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1,viewport-fit=cover"
+>
+
 <meta name="theme-color" content="#07070a">
+
+<!-- PWA -->
+<link rel="manifest" href="/ndule-/manifest.json">
+
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta
+  name="apple-mobile-web-app-status-bar-style"
+  content="black-translucent"
+>
+<meta
+  name="apple-mobile-web-app-title"
+  content="NDULE+"
+>
+
+<link
+  rel="icon"
+  type="image/png"
+  sizes="192x192"
+  href="/ndule-/icon-192.png"
+>
+
+<link
+  rel="apple-touch-icon"
+  href="/ndule-/icon-192.png"
+>
 
 <title>NDULE+ — La musique de Goma</title>
 
 <style>
+
 :root{
   --bg:#07070a;
   --panel:#111116;
@@ -32,10 +65,23 @@ html{
 
 body{
   background:
-    radial-gradient(circle at 20% -10%,rgba(139,92,246,.25),transparent 32%),
+    radial-gradient(
+      circle at 20% -10%,
+      rgba(139,92,246,.25),
+      transparent 32%
+    ),
     var(--bg);
+
   color:var(--text);
-  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
   min-height:100vh;
   padding-bottom:150px;
 }
@@ -59,18 +105,25 @@ svg{
   margin:auto;
 }
 
-/* HEADER */
+/* =========================
+   HEADER
+========================= */
 
 header{
   height:72px;
+
   display:flex;
   align-items:center;
   justify-content:space-between;
+
   position:sticky;
   top:0;
   z-index:100;
+
   background:rgba(7,7,10,.82);
+
   backdrop-filter:blur(20px);
+
   border-bottom:1px solid var(--border);
 }
 
@@ -78,6 +131,7 @@ header{
   display:flex;
   align-items:center;
   gap:10px;
+
   font-size:21px;
   font-weight:900;
 }
@@ -85,7 +139,9 @@ header{
 .logo img{
   width:42px;
   height:42px;
+
   object-fit:cover;
+
   border-radius:12px;
 }
 
@@ -96,34 +152,48 @@ header{
 .header-btn{
   width:42px;
   height:42px;
+
   border-radius:13px;
+
   background:var(--panel);
   color:#fff;
+
   border:1px solid var(--border);
+
   display:grid;
   place-items:center;
 }
 
-/* HERO */
+/* =========================
+   HERO
+========================= */
 
 .hero{
   min-height:400px;
+
   display:flex;
   align-items:center;
+
   padding:50px 0;
 }
 
 .hero small{
   color:#bda8ff;
+
   text-transform:uppercase;
+
   letter-spacing:2px;
+
   font-weight:800;
 }
 
 .hero h1{
   font-size:clamp(58px,10vw,105px);
+
   line-height:.88;
+
   letter-spacing:-7px;
+
   margin-top:16px;
 }
 
@@ -133,55 +203,86 @@ header{
 
 .hero p{
   max-width:600px;
+
   color:var(--muted);
+
   line-height:1.7;
+
   margin-top:25px;
 }
 
 .hero-actions{
   display:flex;
+
   gap:10px;
+
   margin-top:28px;
 }
 
 .primary,
 .secondary{
   min-height:48px;
+
   padding:0 18px;
+
   border-radius:14px;
+
   display:flex;
   align-items:center;
+
   gap:8px;
+
   font-weight:800;
 }
 
 .primary{
   color:white;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent),
+      var(--accent2)
+    );
 }
 
 .secondary{
   color:white;
+
   background:var(--panel);
+
   border:1px solid var(--border);
 }
 
-/* SEARCH */
+/* =========================
+   SEARCH
+========================= */
 
 .search{
   position:relative;
+
   margin-bottom:35px;
 }
 
 .search input{
   width:100%;
   height:55px;
+
   border-radius:15px;
+
   background:var(--panel);
+
   color:white;
+
   border:1px solid var(--border);
+
   outline:none;
-  padding:0 18px 0 50px;
+
+  padding:
+    0
+    18px
+    0
+    50px;
 }
 
 .search input:focus{
@@ -190,12 +291,16 @@ header{
 
 .search svg{
   position:absolute;
+
   left:17px;
   top:17px;
+
   color:var(--muted);
 }
 
-/* SECTION */
+/* =========================
+   SECTION
+========================= */
 
 .section-title{
   margin-bottom:18px;
@@ -207,52 +312,76 @@ header{
 
 .section-title p{
   color:var(--muted);
+
   font-size:12px;
+
   margin-top:5px;
 }
 
-/* GRID */
+/* =========================
+   GRID
+========================= */
 
 .grid{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+
+  grid-template-columns:
+    repeat(4,1fr);
+
   gap:15px;
 }
 
 .card{
   background:var(--panel);
+
   border:1px solid var(--border);
+
   border-radius:var(--radius);
+
   overflow:hidden;
-  transition:.25s;
+
+  transition:
+    transform .25s,
+    border-color .25s;
 }
 
 .card:hover{
   transform:translateY(-4px);
-  border-color:rgba(139,92,246,.5);
+
+  border-color:
+    rgba(139,92,246,.5);
 }
 
 .cover{
   position:relative;
+
   aspect-ratio:1.15;
+
   background:#050507;
 }
 
 .cover img{
   width:100%;
   height:100%;
+
   object-fit:cover;
 }
 
 .play{
   position:absolute;
+
   right:12px;
   bottom:12px;
+
   width:48px;
   height:48px;
+
   border-radius:50%;
+
   background:white;
+
   color:#111;
+
   display:grid;
   place-items:center;
 }
@@ -263,46 +392,78 @@ header{
 
 .title{
   font-size:13px;
+
   font-weight:800;
+
   white-space:nowrap;
+
   overflow:hidden;
+
   text-overflow:ellipsis;
 }
 
 .artist{
   color:var(--muted);
+
   font-size:11px;
+
   margin-top:5px;
 }
 
 .listen{
   width:100%;
   height:36px;
+
   margin-top:12px;
+
   border-radius:10px;
+
   color:white;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent),
+      var(--accent2)
+    );
+
   font-weight:800;
+
   font-size:11px;
 }
 
-/* MINI PLAYER */
+/* =========================
+   MINI PLAYER
+========================= */
 
 .mini{
   position:fixed;
+
   left:50%;
   bottom:84px;
+
   transform:translateX(-50%);
+
   width:min(1000px,94%);
+
   min-height:76px;
+
   padding:9px 12px;
+
   background:rgba(18,18,24,.96);
+
   backdrop-filter:blur(25px);
+
   border:1px solid var(--border);
+
   border-radius:18px;
+
   z-index:500;
+
   display:none;
+
   align-items:center;
+
   gap:12px;
 }
 
@@ -313,59 +474,82 @@ header{
 .mini img{
   width:56px;
   height:56px;
+
   border-radius:11px;
+
   object-fit:cover;
 }
 
 .mini-info{
   flex:1;
+
   min-width:0;
 }
 
 .mini-title{
   font-size:12px;
+
   font-weight:800;
+
   overflow:hidden;
+
   text-overflow:ellipsis;
+
   white-space:nowrap;
 }
 
 .mini-artist{
   color:var(--muted);
+
   font-size:10px;
+
   margin-top:4px;
 }
 
 .controls{
   display:flex;
+
   gap:5px;
 }
 
 .control{
   width:38px;
   height:38px;
+
   border-radius:50%;
+
   background:transparent;
+
   color:white;
+
   display:grid;
   place-items:center;
 }
 
 .control.main{
   background:white;
+
   color:#111;
 }
 
-/* PLAYER */
+/* =========================
+   PLAYER
+========================= */
 
 .overlay{
   position:fixed;
+
   inset:0;
+
   z-index:2000;
+
   background:rgba(0,0,0,.94);
+
   display:none;
+
   align-items:center;
   justify-content:center;
+
   padding:14px;
 }
 
@@ -375,32 +559,46 @@ header{
 
 .player{
   width:min(1100px,100%);
+
   background:#101015;
+
   border:1px solid var(--border);
+
   border-radius:20px;
+
   overflow:hidden;
 }
 
 .player-head{
   height:60px;
+
   display:flex;
+
   align-items:center;
+
   justify-content:space-between;
+
   padding:0 12px;
 }
 
 .close{
   width:40px;
   height:40px;
+
   border-radius:50%;
+
   background:var(--panel2);
+
   color:white;
+
   display:grid;
+
   place-items:center;
 }
 
 .youtube{
   aspect-ratio:16/9;
+
   background:#000;
 }
 
@@ -419,40 +617,62 @@ header{
 
 .player-info p{
   color:var(--muted);
+
   font-size:12px;
+
   margin-top:5px;
 }
 
-/* NAV */
+/* =========================
+   NAVIGATION
+========================= */
 
 .nav{
   position:fixed;
+
   left:0;
   right:0;
   bottom:0;
+
   height:74px;
+
   z-index:450;
+
   background:rgba(7,7,10,.96);
+
   backdrop-filter:blur(20px);
+
   border-top:1px solid var(--border);
 }
 
 .nav-inner{
   width:min(600px,100%);
+
   height:100%;
+
   margin:auto;
+
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+
+  grid-template-columns:
+    repeat(4,1fr);
 }
 
 .nav button{
   background:none;
+
   color:#777783;
+
   display:flex;
+
   flex-direction:column;
+
   align-items:center;
+
   justify-content:center;
+
   gap:5px;
+
   font-size:10px;
 }
 
@@ -460,34 +680,50 @@ header{
   color:var(--accent2);
 }
 
+/* =========================
+   RESPONSIVE
+========================= */
+
 @media(max-width:900px){
+
   .grid{
-    grid-template-columns:repeat(3,1fr);
+    grid-template-columns:
+      repeat(3,1fr);
   }
+
 }
 
 @media(max-width:650px){
+
   .grid{
-    grid-template-columns:repeat(2,1fr);
+    grid-template-columns:
+      repeat(2,1fr);
+
     gap:10px;
   }
 
   .hero h1{
     font-size:65px;
+
     letter-spacing:-5px;
   }
 
   .mini{
     width:96%;
   }
+
 }
 
 @media(max-width:400px){
+
   .mini-info{
     max-width:120px;
   }
+
 }
+
 </style>
+
 </head>
 
 <body>
@@ -497,18 +733,39 @@ header{
 <header>
 
   <div class="logo">
+
     <img
       src="https://i.postimg.cc/1V66N19t/Chat-GPT-Image-4-aout-2026-09-22-33.png"
-      alt="NDULE+">
-    <div>NDULE<span>+</span></div>
+      alt="NDULE+"
+    >
+
+    <div>
+      NDULE<span>+</span>
+    </div>
+
   </div>
 
-  <button class="header-btn" onclick="focusSearch()">
-    <svg width="19" height="19" viewBox="0 0 24 24"
-         fill="none" stroke="currentColor" stroke-width="2">
+  <button
+    class="header-btn"
+    onclick="focusSearch()"
+    aria-label="Rechercher"
+  >
+
+    <svg
+      width="19"
+      height="19"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+
       <circle cx="11" cy="11" r="7"/>
+
       <path d="m20 20-4-4"/>
+
     </svg>
+
   </button>
 
 </header>
@@ -518,7 +775,9 @@ header{
 
   <div>
 
-    <small>Musique de Goma</small>
+    <small>
+      Musique de Goma
+    </small>
 
     <h1>
       NDULE<br>
@@ -526,22 +785,35 @@ header{
     </h1>
 
     <p>
-      Découvre les artistes et les vidéos musicales de Goma
-      dans une expérience moderne pensée pour mobile.
+      Découvre les artistes et les vidéos musicales
+      de Goma dans une expérience moderne pensée
+      pour mobile.
     </p>
 
     <div class="hero-actions">
 
-      <button class="primary" onclick="playVideo(0)">
-        <svg width="17" height="17" viewBox="0 0 24 24"
-             fill="currentColor">
+      <button
+        class="primary"
+        onclick="playVideo(0)"
+      >
+
+        <svg
+          width="17"
+          height="17"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
           <path d="M8 5v14l11-7z"/>
         </svg>
+
         Écouter
+
       </button>
 
-      <button class="secondary"
-              onclick="document.getElementById('music').scrollIntoView({behavior:'smooth'})">
+      <button
+        class="secondary"
+        onclick="document.getElementById('music').scrollIntoView({behavior:'smooth'})"
+      >
         Découvrir
       </button>
 
@@ -554,17 +826,27 @@ header{
 
 <div class="search">
 
-  <svg width="20" height="20" viewBox="0 0 24 24"
-       fill="none" stroke="currentColor" stroke-width="2">
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+  >
+
     <circle cx="11" cy="11" r="7"/>
+
     <path d="m20 20-4-4"/>
+
   </svg>
 
   <input
     id="search"
     type="search"
     placeholder="Rechercher dans NDULE+..."
-    oninput="searchMusic()">
+    oninput="searchMusic()"
+  >
 
 </div>
 
@@ -572,11 +854,21 @@ header{
 <section id="music">
 
   <div class="section-title">
-    <h2>Découvrir</h2>
-    <p>Les vidéos musicales sélectionnées pour NDULE+</p>
+
+    <h2>
+      Découvrir
+    </h2>
+
+    <p>
+      Les vidéos musicales sélectionnées pour NDULE+
+    </p>
+
   </div>
 
-  <div class="grid" id="grid"></div>
+  <div
+    class="grid"
+    id="grid"
+  ></div>
 
 </section>
 
@@ -585,17 +877,30 @@ header{
 
 <!-- MINI PLAYER -->
 
-<div class="mini" id="mini">
+<div
+  class="mini"
+  id="mini"
+>
 
-  <img id="miniCover" src="" alt="">
+  <img
+    id="miniCover"
+    src=""
+    alt=""
+  >
 
   <div class="mini-info">
 
-    <div class="mini-title" id="miniTitle">
+    <div
+      class="mini-title"
+      id="miniTitle"
+    >
       NDULE+
     </div>
 
-    <div class="mini-artist" id="miniArtist">
+    <div
+      class="mini-artist"
+      id="miniArtist"
+    >
       Musique de Goma
     </div>
 
@@ -603,32 +908,66 @@ header{
 
   <div class="controls">
 
-    <button class="control" onclick="previousVideo()">
+    <button
+      class="control"
+      onclick="previousVideo()"
+      aria-label="Précédent"
+    >
 
-      <svg width="17" height="17" viewBox="0 0 24 24"
-           fill="currentColor">
+      <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+      >
+
         <path d="M6 5h2v14H6z"/>
+
         <path d="m19 5-9 7 9 7z"/>
+
       </svg>
 
     </button>
 
-    <button class="control main" onclick="togglePlay()"
-            id="playButton">
 
-      <svg width="17" height="17" viewBox="0 0 24 24"
-           fill="currentColor">
+    <button
+      class="control main"
+      onclick="togglePlay()"
+      id="playButton"
+      aria-label="Lecture"
+    >
+
+      <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+      >
+
         <path d="M8 5v14l11-7z"/>
+
       </svg>
 
     </button>
 
-    <button class="control" onclick="nextVideo()">
 
-      <svg width="17" height="17" viewBox="0 0 24 24"
-           fill="currentColor">
+    <button
+      class="control"
+      onclick="nextVideo()"
+      aria-label="Suivant"
+    >
+
+      <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+      >
+
         <path d="M16 5h2v14h-2z"/>
+
         <path d="m5 5 9 7-9 7z"/>
+
       </svg>
 
     </button>
@@ -638,25 +977,40 @@ header{
 </div>
 
 
-<!-- PLAYER YOUTUBE -->
+<!-- LECTEUR -->
 
-<div class="overlay" id="overlay">
+<div
+  class="overlay"
+  id="overlay"
+>
 
   <div class="player">
 
     <div class="player-head">
 
-      <strong>NDULE+</strong>
+      <strong>
+        NDULE+
+      </strong>
 
-      <button class="close" onclick="closePlayer()">
+      <button
+        class="close"
+        onclick="closePlayer()"
+        aria-label="Fermer"
+      >
 
-        <svg width="19" height="19"
-             viewBox="0 0 24 24"
-             fill="none"
-             stroke="currentColor"
-             stroke-width="2">
+        <svg
+          width="19"
+          height="19"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+
           <path d="M18 6 6 18"/>
+
           <path d="m6 6 12 12"/>
+
         </svg>
 
       </button>
@@ -664,12 +1018,16 @@ header{
     </div>
 
     <div class="youtube">
+
       <div id="ytplayer"></div>
+
     </div>
 
     <div class="player-info">
 
-      <h2 id="playerTitle">NDULE+</h2>
+      <h2 id="playerTitle">
+        NDULE+
+      </h2>
 
       <p id="playerArtist">
         Musique de Goma
@@ -688,40 +1046,102 @@ header{
 
   <div class="nav-inner">
 
-    <button class="active" onclick="goHome(this)">
-      <svg width="21" height="21" viewBox="0 0 24 24"
-           fill="none" stroke="currentColor" stroke-width="2">
+    <button
+      class="active"
+      onclick="goHome(this)"
+    >
+
+      <svg
+        width="21"
+        height="21"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+
         <path d="m3 10 9-7 9 7"/>
+
         <path d="M5 9v11h14V9"/>
+
       </svg>
+
       Accueil
+
     </button>
 
-    <button onclick="goMusic(this)">
-      <svg width="21" height="21" viewBox="0 0 24 24"
-           fill="none" stroke="currentColor" stroke-width="2">
+
+    <button
+      onclick="goMusic(this)"
+    >
+
+      <svg
+        width="21"
+        height="21"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+
         <path d="M9 18V5l12-2v13"/>
+
         <circle cx="6" cy="18" r="3"/>
+
         <circle cx="18" cy="16" r="3"/>
+
       </svg>
+
       Musiques
+
     </button>
 
-    <button onclick="focusSearch()">
-      <svg width="21" height="21" viewBox="0 0 24 24"
-           fill="none" stroke="currentColor" stroke-width="2">
+
+    <button
+      onclick="focusSearch()"
+    >
+
+      <svg
+        width="21"
+        height="21"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+
         <circle cx="11" cy="11" r="7"/>
+
         <path d="m20 20-4-4"/>
+
       </svg>
+
       Recherche
+
     </button>
 
-    <button onclick="showFavorites()">
-      <svg width="21" height="21" viewBox="0 0 24 24"
-           fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M20.8 8.7c0 5.5-8.8 10.3-8.8 10.3S3.2 14.2 3.2 8.7A4.7 4.7 0 0 1 12 6a4.7 4.7 0 0 1 8.8 2.7Z"/>
+
+    <button
+      onclick="showFavorites()"
+    >
+
+      <svg
+        width="21"
+        height="21"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+
+        <path
+          d="M20.8 8.7c0 5.5-8.8 10.3-8.8 10.3S3.2 14.2 3.2 8.7A4.7 4.7 0 0 1 12 6a4.7 4.7 0 0 1 8.8 2.7Z"
+        />
+
       </svg>
+
       Favoris
+
     </button>
 
   </div>
@@ -729,86 +1149,95 @@ header{
 </nav>
 
 
-<!-- YOUTUBE API -->
+<!-- YOUTUBE -->
 
 <script src="https://www.youtube.com/iframe_api"></script>
+
 
 <script>
 
 /* =====================================================
-   VIDEOS FOURNIES PAR TOI
+   VIDÉOS
 ===================================================== */
 
 const videos = [
-"kRcr6waZvHA",
-"LEwfFxrvzp0",
-"nDLncG-iYD4",
-"ts87r5MVt2I",
-"O1_gxdgOjBc",
-"igg-KQbgRrA",
-"ivJz9VFTiBk",
-"rVVKV1p3l18",
-"PNQhwRTIzg0",
-"HSaphIKFeBg",
-"_1XrYV51FPw",
-"vIePNpRAiyM",
-"YKYoCHUG1lA",
-"q-aB_SShtmM",
-"aDEwo1TlDDQ",
-"pGLMS49cvTA",
-"n2dwe5P2YJM",
-"G1iVCRtcKqY",
-"BZ2WqvumYH4",
-"0ApOGQl8INA",
-"jFR_W2ODIOM",
-"jVicXq_WIGI",
-"Nr5NnSyE4J4",
-"FzkLWh7Q-yM",
-"hy5dxHIGtv4",
-"flngIZlumRw",
-"dhareDrAoMo",
-"R2a9kSeTnBs",
-"QozSu9M_rRI",
-"VGdhpZt4UKI",
-"wxUtO0Je8Rk",
-"vEIhgeVF-Bw",
-"sfohgE1HKhE"
+
+  "kRcr6waZvHA",
+  "LEwfFxrvzp0",
+  "nDLncG-iYD4",
+  "ts87r5MVt2I",
+  "O1_gxdgOjBc",
+  "igg-KQbgRrA",
+  "ivJz9VFTiBk",
+  "rVVKV1p3l18",
+  "PNQhwRTIzg0",
+  "HSaphIKFeBg",
+  "_1XrYV51FPw",
+  "vIePNpRAiyM",
+  "YKYoCHUG1lA",
+  "q-aB_SShtmM",
+  "aDEwo1TlDDQ",
+  "pGLMS49cvTA",
+  "n2dwe5P2YJM",
+  "G1iVCRtcKqY",
+  "BZ2WqvumYH4",
+  "0ApOGQl8INA",
+  "jFR_W2ODIOM",
+  "jVicXq_WIGI",
+  "Nr5NnSyE4J4",
+  "FzkLWh7Q-yM",
+  "hy5dxHIGtv4",
+  "flngIZlumRw",
+  "dhareDrAoMo",
+  "R2a9kSeTnBs",
+  "QozSu9M_rRI",
+  "VGdhpZt4UKI",
+  "wxUtO0Je8Rk",
+  "vEIhgeVF-Bw",
+  "sfohgE1HKhE"
+
 ];
 
 
 /* =====================================================
-   ETAT
+   VARIABLES
 ===================================================== */
 
 let player = null;
+
 let currentIndex = 0;
+
 let playerReady = false;
 
 
 /* =====================================================
-   YOUTUBE PLAYER
+   YOUTUBE
 ===================================================== */
 
 function onYouTubeIframeAPIReady(){
 
-  player = new YT.Player("ytplayer",{
+  player = new YT.Player(
+    "ytplayer",
+    {
 
-    width:"100%",
-    height:"100%",
+      width:"100%",
 
-    playerVars:{
-      autoplay:0,
-      controls:1,
-      playsinline:1,
-      rel:0
-    },
+      height:"100%",
 
-    events:{
-      onReady:onPlayerReady,
-      onStateChange:onPlayerStateChange
+      playerVars:{
+        autoplay:0,
+        controls:1,
+        playsinline:1,
+        rel:0
+      },
+
+      events:{
+        onReady:onPlayerReady,
+        onStateChange:onPlayerStateChange
+      }
+
     }
-
-  });
+  );
 
 }
 
@@ -821,7 +1250,7 @@ function onPlayerReady(){
 
 
 /* =====================================================
-   ETAT DU PLAYER
+   PLAYER STATE
 ===================================================== */
 
 function onPlayerStateChange(event){
@@ -853,9 +1282,11 @@ function onPlayerStateChange(event){
 
 function thumbnail(id){
 
-  return "https://i.ytimg.com/vi/"
-       + id
-       + "/hqdefault.jpg";
+  return (
+    "https://i.ytimg.com/vi/"
+    + id +
+    "/hqdefault.jpg"
+  );
 
 }
 
@@ -888,14 +1319,23 @@ function render(list = videos){
         <img
           src="${thumbnail(id)}"
           loading="lazy"
-          alt="NDULE+">
+          alt="NDULE+"
+        >
 
-        <button class="play">
+        <button
+          class="play"
+          aria-label="Lire"
+        >
 
-          <svg width="20" height="20"
-               viewBox="0 0 24 24"
-               fill="currentColor">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+
             <path d="M8 5v14l11-7z"/>
+
           </svg>
 
         </button>
@@ -909,7 +1349,7 @@ function render(list = videos){
         </div>
 
         <div class="artist">
-          Artiste — information YouTube
+          Musique de Goma
         </div>
 
         <button class="listen">
@@ -917,13 +1357,16 @@ function render(list = videos){
         </button>
 
       </div>
+
     `;
 
-    card.querySelector(".play")
+    card
+      .querySelector(".play")
       .onclick = () =>
         playVideo(original);
 
-    card.querySelector(".listen")
+    card
+      .querySelector(".listen")
       .onclick = () =>
         playVideo(original);
 
@@ -940,34 +1383,44 @@ function render(list = videos){
 
 function playVideo(index){
 
+  if(index < 0 || index >= videos.length){
+    return;
+  }
+
   currentIndex = index;
 
   const id =
     videos[index];
 
-  document.getElementById("mini")
+  document
+    .getElementById("mini")
     .classList.add("active");
 
-  document.getElementById("miniCover")
+  document
+    .getElementById("miniCover")
     .src = thumbnail(id);
 
-  document.getElementById("miniTitle")
+  document
+    .getElementById("miniTitle")
     .textContent = "Musique NDULE+";
 
-  document.getElementById("miniArtist")
+  document
+    .getElementById("miniArtist")
     .textContent = "Musique de Goma";
 
-  document.getElementById("playerTitle")
+  document
+    .getElementById("playerTitle")
     .textContent = "Musique NDULE+";
 
-  document.getElementById("playerArtist")
+  document
+    .getElementById("playerArtist")
     .textContent = "Lecture YouTube";
 
-  document.getElementById("overlay")
+  document
+    .getElementById("overlay")
     .classList.add("active");
 
-  document.body.style.overflow =
-    "hidden";
+  document.body.style.overflow = "hidden";
 
   if(playerReady){
 
@@ -979,12 +1432,14 @@ function playVideo(index){
 
 
 /* =====================================================
-   PAUSE / PLAY
+   PLAY / PAUSE
 ===================================================== */
 
 function togglePlay(){
 
-  if(!playerReady) return;
+  if(!playerReady){
+    return;
+  }
 
   const state =
     player.getPlayerState();
@@ -1004,22 +1459,30 @@ function togglePlay(){
 
 function setPlayIcon(playing){
 
-  document.getElementById("playButton")
-    .innerHTML = playing
+  const button =
+    document.getElementById("playButton");
+
+  button.innerHTML = playing
 
     ? `
-      <svg width="17" height="17"
-           viewBox="0 0 24 24"
-           fill="currentColor">
+      <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+      >
         <path d="M7 5h3v14H7z"/>
         <path d="M14 5h3v14h-3z"/>
       </svg>
     `
 
     : `
-      <svg width="17" height="17"
-           viewBox="0 0 24 24"
-           fill="currentColor">
+      <svg
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+      >
         <path d="M8 5v14l11-7z"/>
       </svg>
     `;
@@ -1028,18 +1491,23 @@ function setPlayIcon(playing){
 
 
 /* =====================================================
-   SUIVANT / PRECEDENT
+   SUIVANT
 ===================================================== */
 
 function nextVideo(){
 
   currentIndex =
-    (currentIndex + 1) % videos.length;
+    (currentIndex + 1)
+    % videos.length;
 
   playVideo(currentIndex);
 
 }
 
+
+/* =====================================================
+   PRÉCÉDENT
+===================================================== */
 
 function previousVideo(){
 
@@ -1058,7 +1526,8 @@ function previousVideo(){
 
 function closePlayer(){
 
-  document.getElementById("overlay")
+  document
+    .getElementById("overlay")
     .classList.remove("active");
 
   document.body.style.overflow = "";
@@ -1073,7 +1542,8 @@ function closePlayer(){
 function searchMusic(){
 
   const q =
-    document.getElementById("search")
+    document
+      .getElementById("search")
       .value
       .toLowerCase()
       .trim();
@@ -1086,12 +1556,6 @@ function searchMusic(){
 
   }
 
-  /*
-    Les titres/artistes réels seront branchés
-    ici lorsque les métadonnées YouTube seront
-    récupérées.
-  */
-
   const results =
     videos.filter(id =>
       id.toLowerCase().includes(q)
@@ -1103,7 +1567,7 @@ function searchMusic(){
 
 
 /* =====================================================
-   NAVIGATION
+   RECHERCHE
 ===================================================== */
 
 function focusSearch(){
@@ -1121,11 +1585,16 @@ function focusSearch(){
 }
 
 
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
 function goHome(button){
 
   activateNav(button);
 
-  document.getElementById("home")
+  document
+    .getElementById("home")
     .scrollIntoView({
       behavior:"smooth"
     });
@@ -1137,7 +1606,8 @@ function goMusic(button){
 
   activateNav(button);
 
-  document.getElementById("music")
+  document
+    .getElementById("music")
     .scrollIntoView({
       behavior:"smooth"
     });
@@ -1147,7 +1617,8 @@ function goMusic(button){
 
 function activateNav(button){
 
-  document.querySelectorAll(".nav button")
+  document
+    .querySelectorAll(".nav button")
     .forEach(b =>
       b.classList.remove("active")
     );
@@ -1159,15 +1630,50 @@ function activateNav(button){
 
 function showFavorites(){
 
-  /*
-    Système de favoris à brancher avec
-    les comptes utilisateurs ou localStorage.
-  */
-
-  document.getElementById("music")
+  document
+    .getElementById("music")
     .scrollIntoView({
       behavior:"smooth"
     });
+
+}
+
+
+/* =====================================================
+   PWA
+===================================================== */
+
+if("serviceWorker" in navigator){
+
+  window.addEventListener(
+    "load",
+    () => {
+
+      navigator.serviceWorker
+        .register(
+          "/ndule-/service-worker.js",
+          {
+            scope:"/ndule-/"
+          }
+        )
+        .then(() => {
+
+          console.log(
+            "NDULE+ PWA activée"
+          );
+
+        })
+        .catch(error => {
+
+          console.error(
+            "Erreur PWA :",
+            error
+          );
+
+        });
+
+    }
+  );
 
 }
 
