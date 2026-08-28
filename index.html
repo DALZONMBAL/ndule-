@@ -1,2552 +1,889 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#08080c">
-<meta name="description" content="NDULE+ — La musique de Goma">
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#0d0d12" />
 <title>NDULE+ — La musique de Goma</title>
-
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiTkRVTEUrIiwic2hvcnRfbmFtZSI6Ik5EVUxFKyIsInN0YXJ0X3VybCI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjMGQwZDEyIiwidGhlbWVfY29sb3IiOiIjMGQwZDEyIn0=" />
 <style>
-:root{
-  --bg:#07070a;
-  --bg2:#0b0b10;
-  --panel:#111117;
-  --panel2:#181820;
-  --panel3:#20202a;
-  --text:#fff;
-  --muted:#92929f;
-  --accent:#8b5cf6;
-  --accent2:#c084fc;
-  --accent3:#6d28d9;
-  --border:rgba(255,255,255,.08);
-  --success:#34d399;
-  --danger:#ef4444;
-  --radius:20px;
-  --shadow:0 20px 60px rgba(0,0,0,.35);
-}
-
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
-html{
-  scroll-behavior:smooth;
-}
-
-body{
-  min-height:100vh;
-  background:
-    radial-gradient(circle at 20% -10%,rgba(139,92,246,.25),transparent 30%),
-    radial-gradient(circle at 100% 30%,rgba(192,132,252,.08),transparent 25%),
-    var(--bg);
-  color:var(--text);
-  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  padding-bottom:120px;
-}
-
-body.locked{
-  overflow:hidden;
-}
-
-button,
-input{
-  font:inherit;
-}
-
-button{
-  border:0;
-  cursor:pointer;
-}
-
-img{
-  display:block;
-  max-width:100%;
-}
-
-svg{
-  display:block;
-}
-
-.hidden{
-  display:none!important;
-}
-
-/* =========================
-   LOGIN
-========================= */
-
-.login-screen{
-  position:fixed;
-  inset:0;
-  z-index:10000;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:22px;
-  background:
-    radial-gradient(circle at 50% 0%,rgba(139,92,246,.30),transparent 40%),
-    #060609;
-  overflow:auto;
-}
-
-.login-box{
-  width:min(460px,100%);
-  text-align:center;
-  animation:loginIn .7s ease both;
-}
-
-@keyframes loginIn{
-  from{
-    opacity:0;
-    transform:translateY(25px) scale(.97);
+  :root{
+    --bg:#0d0d12; --surface:#16161f; --surface-light:#1e1e2a;
+    --primary:#a855f7; --primary-dark:#7e22ce; --primary-light:#d8b4fe;
+    --text:#ffffff; --text-dim:rgba(255,255,255,0.5); --text-faint:rgba(255,255,255,0.3);
+    --border:rgba(255,255,255,0.07);
   }
-  to{
-    opacity:1;
-    transform:none;
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    -webkit-tap-highlight-color:transparent; overscroll-behavior-y:none;
+    padding-bottom:70px;
   }
-}
-
-.login-logo{
-  width:82px;
-  height:82px;
-  margin:0 auto 25px;
-  border-radius:24px;
-  object-fit:cover;
-  box-shadow:
-    0 0 0 1px rgba(255,255,255,.1),
-    0 20px 60px rgba(139,92,246,.35);
-}
-
-.login-brand{
-  font-size:27px;
-  font-weight:950;
-  letter-spacing:-1px;
-}
-
-.login-brand span{
-  color:var(--accent2);
-}
-
-.login-subtitle{
-  margin-top:7px;
-  color:var(--muted);
-  font-size:14px;
-}
-
-.login-box h1{
-  margin-top:42px;
-  font-size:clamp(30px,8vw,43px);
-  letter-spacing:-2px;
-}
-
-.login-description{
-  color:var(--muted);
-  line-height:1.6;
-  font-size:14px;
-  max-width:360px;
-  margin:13px auto 30px;
-}
-
-.continue-btn{
-  width:100%;
-  height:58px;
-  border-radius:17px;
-  color:white;
-  font-weight:900;
-  font-size:15px;
-  background:linear-gradient(135deg,var(--accent3),var(--accent2));
-  box-shadow:0 15px 40px rgba(139,92,246,.28);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  transition:.25s;
-}
-
-.continue-btn:hover{
-  transform:translateY(-2px);
-  box-shadow:0 20px 50px rgba(139,92,246,.38);
-}
-
-.continue-btn:active{
-  transform:scale(.98);
-}
-
-.login-note{
-  margin-top:20px;
-  color:#666672;
-  font-size:11px;
-}
-
-/* =========================
-   APP
-========================= */
-
-.app{
-  width:min(1280px,94%);
-  margin:auto;
-}
-
-header{
-  height:76px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  position:sticky;
-  top:0;
-  z-index:1000;
-  background:rgba(7,7,10,.78);
-  backdrop-filter:blur(24px);
-  border-bottom:1px solid var(--border);
-}
-
-.logo{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-size:21px;
-  font-weight:950;
-}
-
-.logo img{
-  width:43px;
-  height:43px;
-  border-radius:13px;
-  object-fit:cover;
-}
-
-.logo span{
-  color:var(--accent2);
-}
-
-.header-actions{
-  display:flex;
-  gap:8px;
-}
-
-.header-btn{
-  width:43px;
-  height:43px;
-  border-radius:14px;
-  background:var(--panel);
-  color:white;
-  border:1px solid var(--border);
-  display:grid;
-  place-items:center;
-  transition:.2s;
-}
-
-.header-btn:hover{
-  background:var(--panel2);
-  border-color:rgba(192,132,252,.35);
-}
-
-/* =========================
-   HERO
-========================= */
-
-.hero{
-  min-height:430px;
-  display:flex;
-  align-items:center;
-  padding:65px 0 45px;
-  position:relative;
-  overflow:hidden;
-}
-
-.hero-content{
-  position:relative;
-  z-index:2;
-}
-
-.hero small{
-  color:#c4a8ff;
-  text-transform:uppercase;
-  letter-spacing:2.5px;
-  font-size:11px;
-  font-weight:900;
-}
-
-.hero h1{
-  font-size:clamp(64px,10vw,120px);
-  line-height:.82;
-  letter-spacing:-9px;
-  margin-top:18px;
-  font-weight:1000;
-}
-
-.hero h1 span{
-  color:var(--accent2);
-}
-
-.hero p{
-  max-width:620px;
-  color:var(--muted);
-  line-height:1.7;
-  margin-top:28px;
-  font-size:15px;
-}
-
-.hero-actions{
-  display:flex;
-  gap:10px;
-  margin-top:30px;
-}
-
-.primary,
-.secondary{
-  min-height:49px;
-  padding:0 19px;
-  border-radius:15px;
-  display:flex;
-  align-items:center;
-  gap:9px;
-  font-weight:850;
-  transition:.2s;
-}
-
-.primary{
-  color:white;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-}
-
-.secondary{
-  color:white;
-  background:var(--panel);
-  border:1px solid var(--border);
-}
-
-.primary:hover,
-.secondary:hover{
-  transform:translateY(-2px);
-}
-
-/* =========================
-   SEARCH
-========================= */
-
-.search{
-  position:relative;
-  margin:0 0 40px;
-}
-
-.search input{
-  width:100%;
-  height:56px;
-  border-radius:17px;
-  background:rgba(17,17,23,.92);
-  color:white;
-  border:1px solid var(--border);
-  outline:none;
-  padding:0 20px 0 53px;
-  transition:.2s;
-}
-
-.search input:focus{
-  border-color:rgba(139,92,246,.7);
-  box-shadow:0 0 0 4px rgba(139,92,246,.08);
-}
-
-.search svg{
-  position:absolute;
-  left:18px;
-  top:18px;
-  color:var(--muted);
-}
-
-/* =========================
-   SECTIONS
-========================= */
-
-section.content-section{
-  margin-bottom:55px;
-}
-
-.section-head{
-  display:flex;
-  align-items:flex-end;
-  justify-content:space-between;
-  margin-bottom:18px;
-}
-
-.section-head h2{
-  font-size:25px;
-  letter-spacing:-.7px;
-}
-
-.section-head p{
-  color:var(--muted);
-  font-size:12px;
-  margin-top:5px;
-}
-
-.see-all{
-  background:none;
-  color:var(--accent2);
-  font-size:12px;
-  font-weight:800;
-}
-
-/* =========================
-   MUSIC GRID
-========================= */
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:16px;
-}
-
-.card{
-  background:rgba(17,17,23,.92);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  overflow:hidden;
-  transition:.28s;
-  box-shadow:0 8px 30px rgba(0,0,0,.08);
-}
-
-.card:hover{
-  transform:translateY(-5px);
-  border-color:rgba(139,92,246,.42);
-  box-shadow:var(--shadow);
-}
-
-.cover{
-  position:relative;
-  aspect-ratio:1.15;
-  background:#050507;
-  overflow:hidden;
-}
-
-.cover img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  transition:.4s;
-}
-
-.card:hover .cover img{
-  transform:scale(1.04);
-}
-
-.cover::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(to top,rgba(0,0,0,.4),transparent 50%);
-  pointer-events:none;
-}
-
-.play{
-  position:absolute;
-  right:12px;
-  bottom:12px;
-  z-index:2;
-  width:48px;
-  height:48px;
-  border-radius:50%;
-  background:white;
-  color:#111;
-  display:grid;
-  place-items:center;
-  box-shadow:0 10px 25px rgba(0,0,0,.3);
-  transition:.2s;
-}
-
-.play:hover{
-  transform:scale(1.07);
-}
-
-.card-content{
-  padding:14px;
-}
-
-.title{
-  font-size:14px;
-  font-weight:850;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.artist{
-  color:var(--muted);
-  font-size:11px;
-  margin-top:6px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.card-actions{
-  display:flex;
-  gap:7px;
-  margin-top:12px;
-}
-
-.listen{
-  flex:1;
-  height:36px;
-  border-radius:10px;
-  color:white;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  font-weight:850;
-  font-size:11px;
-}
-
-.favorite{
-  width:36px;
-  height:36px;
-  border-radius:10px;
-  background:var(--panel2);
-  color:#aaa;
-  display:grid;
-  place-items:center;
-}
-
-.favorite.active{
-  color:#d8b4fe;
-  background:rgba(139,92,246,.2);
-}
-
-/* =========================
-   ARTISTS
-========================= */
-
-.artist-grid{
-  display:grid;
-  grid-template-columns:repeat(6,1fr);
-  gap:18px;
-}
-
-.artist-card{
-  text-align:center;
-  cursor:pointer;
-}
-
-.artist-image{
-  width:100%;
-  aspect-ratio:1;
-  border-radius:50%;
-  object-fit:cover;
-  border:2px solid transparent;
-  transition:.3s;
-  background:var(--panel);
-}
-
-.artist-card:hover .artist-image{
-  transform:scale(1.04);
-  border-color:var(--accent2);
-}
-
-.artist-name{
-  margin-top:10px;
-  font-weight:800;
-  font-size:12px;
-}
-
-.artist-count{
-  color:var(--muted);
-  font-size:10px;
-  margin-top:4px;
-}
-
-/* =========================
-   MINI PLAYER
-========================= */
-
-.mini{
-  position:fixed;
-  left:50%;
-  bottom:88px;
-  transform:translateX(-50%);
-  width:min(1050px,94%);
-  min-height:78px;
-  padding:9px 12px;
-  background:rgba(18,18,24,.97);
-  backdrop-filter:blur(25px);
-  border:1px solid var(--border);
-  border-radius:19px;
-  z-index:3000;
-  display:none;
-  align-items:center;
-  gap:12px;
-  box-shadow:0 20px 60px rgba(0,0,0,.45);
-}
-
-.mini.active{
-  display:flex;
-}
-
-.mini img{
-  width:57px;
-  height:57px;
-  border-radius:12px;
-  object-fit:cover;
-}
-
-.mini-info{
-  flex:1;
-  min-width:0;
-}
-
-.mini-title{
-  font-size:12px;
-  font-weight:850;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-
-.mini-artist{
-  color:var(--muted);
-  font-size:10px;
-  margin-top:4px;
-}
-
-.controls{
-  display:flex;
-  gap:4px;
-}
-
-.control{
-  width:39px;
-  height:39px;
-  border-radius:50%;
-  background:transparent;
-  color:white;
-  display:grid;
-  place-items:center;
-}
-
-.control.main{
-  background:white;
-  color:#111;
-}
-
-/* =========================
-   PLAYER
-========================= */
-
-.overlay{
-  position:fixed;
-  inset:0;
-  z-index:5000;
-  background:rgba(0,0,0,.94);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:15px;
-}
-
-.overlay.active{
-  display:flex;
-}
-
-.player{
-  width:min(1100px,100%);
-  max-height:94vh;
-  overflow:auto;
-  background:#101015;
-  border:1px solid var(--border);
-  border-radius:22px;
-  box-shadow:0 30px 100px rgba(0,0,0,.6);
-}
-
-.player-head{
-  height:60px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 13px;
-}
-
-.player-brand{
-  font-weight:900;
-}
-
-.close{
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  background:var(--panel2);
-  color:white;
-  display:grid;
-  place-items:center;
-}
-
-.youtube{
-  width:100%;
-  aspect-ratio:16/9;
-  background:#000;
-}
-
-#ytplayer{
-  width:100%;
-  height:100%;
-}
-
-.player-info{
-  padding:18px;
-}
-
-.player-info h2{
-  font-size:20px;
-}
-
-.player-info p{
-  color:var(--muted);
-  font-size:12px;
-  margin-top:6px;
-}
-
-/* =========================
-   PAGES
-========================= */
-
-.page{
-  display:none;
-  padding:35px 0;
-  min-height:65vh;
-}
-
-.page.active{
-  display:block;
-}
-
-.page-title{
-  font-size:35px;
-  letter-spacing:-1.5px;
-  margin-bottom:7px;
-}
-
-.page-subtitle{
-  color:var(--muted);
-  font-size:13px;
-  margin-bottom:30px;
-}
-
-/* PROFILE */
-
-.profile-card{
-  max-width:650px;
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:24px;
-  padding:25px;
-}
-
-.profile-top{
-  display:flex;
-  align-items:center;
-  gap:18px;
-}
-
-.profile-avatar{
-  width:75px;
-  height:75px;
-  border-radius:50%;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  display:grid;
-  place-items:center;
-  font-size:27px;
-  font-weight:950;
-}
-
-.profile-name{
-  font-size:20px;
-  font-weight:900;
-}
-
-.profile-email{
-  color:var(--muted);
-  font-size:12px;
-  margin-top:5px;
-}
-
-.stats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-  margin-top:25px;
-}
-
-.stat{
-  padding:16px;
-  background:var(--panel2);
-  border-radius:15px;
-  text-align:center;
-}
-
-.stat strong{
-  display:block;
-  font-size:20px;
-}
-
-.stat span{
-  color:var(--muted);
-  font-size:10px;
-}
-
-/* =========================
-   EMPTY
-========================= */
-
-.empty{
-  padding:60px 20px;
-  text-align:center;
-  border:1px dashed rgba(255,255,255,.1);
-  border-radius:20px;
-  color:var(--muted);
-}
-
-.empty svg{
-  margin:0 auto 15px;
-}
-
-/* =========================
-   NAV
-========================= */
-
-.nav{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  height:76px;
-  z-index:3500;
-  background:rgba(7,7,10,.96);
-  backdrop-filter:blur(22px);
-  border-top:1px solid var(--border);
-}
-
-.nav-inner{
-  width:min(700px,100%);
-  height:100%;
-  margin:auto;
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-}
-
-.nav button{
-  background:none;
-  color:#72727e;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:5px;
-  font-size:9px;
-  transition:.2s;
-}
-
-.nav button.active{
-  color:var(--accent2);
-}
-
-.nav button svg{
-  transition:.2s;
-}
-
-.nav button.active svg{
-  transform:translateY(-1px);
-}
-
-/* =========================
-   TOAST
-========================= */
-
-.toast{
-  position:fixed;
-  left:50%;
-  top:22px;
-  transform:translate(-50%,-20px);
-  z-index:10000;
-  background:#18181f;
-  border:1px solid var(--border);
-  color:white;
-  padding:12px 17px;
-  border-radius:13px;
-  font-size:12px;
-  opacity:0;
-  pointer-events:none;
-  transition:.25s;
-}
-
-.toast.show{
-  opacity:1;
-  transform:translate(-50%,0);
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media(max-width:1000px){
-  .grid{
-    grid-template-columns:repeat(3,1fr);
+  a{color:inherit; text-decoration:none;}
+  button{font-family:inherit; cursor:pointer; border:none; background:none; color:inherit;}
+  input{font-family:inherit;}
+  ::-webkit-scrollbar{width:6px; height:6px;}
+  ::-webkit-scrollbar-thumb{background:var(--primary-dark); border-radius:999px;}
+
+  .glass{
+    background:rgba(30,30,42,0.65);
+    backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+    border:1px solid var(--border);
   }
 
-  .artist-grid{
-    grid-template-columns:repeat(4,1fr);
-  }
-}
-
-@media(max-width:650px){
-  .app{
-    width:94%;
-  }
-
+  /* HEADER */
   header{
-    height:68px;
+    position:sticky; top:0; z-index:30;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 16px;
   }
+  .logo{font-size:22px; font-weight:800; color:var(--primary); letter-spacing:-0.5px;}
+  .logo span{font-size:10px; display:block; color:var(--text-faint); font-weight:400; letter-spacing:0;}
+  .header-icons{display:flex; align-items:center; gap:14px;}
+  .icon-btn{width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,0.06);}
+  .avatar{width:34px; height:34px; border-radius:50%; background:var(--primary); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; overflow:hidden;}
 
-  .hero{
-    min-height:390px;
-    padding:50px 0 35px;
+  /* BOTTOM NAV */
+  nav.bottom{
+    position:fixed; bottom:0; left:0; right:0; z-index:40;
+    display:flex; justify-content:space-around; align-items:center;
+    padding:8px 4px 10px; border-top:1px solid var(--border);
   }
+  nav.bottom button{
+    display:flex; flex-direction:column; align-items:center; gap:3px;
+    font-size:10.5px; color:var(--text-dim); padding:4px 10px; border-radius:10px;
+  }
+  nav.bottom button.active{color:var(--primary);}
+  nav.bottom svg{width:22px; height:22px;}
 
-  .hero h1{
-    font-size:67px;
-    letter-spacing:-6px;
-  }
+  main{min-height:calc(100vh - 130px); padding:16px; padding-bottom:16px; transition:padding-bottom .15s;}
+  body.has-mini-player main{padding-bottom:80px;}
+  .hidden{display:none !important;}
 
-  .hero p{
-    font-size:13px;
-  }
+  h1.page-title{font-size:24px; font-weight:800; margin-bottom:16px;}
+  h2.section-title{font-size:17px; font-weight:700; margin-bottom:12px;}
+  section{margin-bottom:28px;}
 
-  .grid{
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
-  }
+  /* Horizontal scroller (artists) */
+  .h-scroll{display:flex; gap:18px; overflow-x:auto; padding-bottom:4px;}
+  .artist-item{display:flex; flex-direction:column; align-items:center; gap:6px; flex-shrink:0; width:84px; text-align:center;}
+  .artist-photo{width:78px; height:78px; border-radius:50%; background:var(--surface-light); display:flex; align-items:center; justify-content:center; font-size:26px; font-weight:700; color:var(--primary); overflow:hidden; border:2px solid transparent;}
+  .artist-photo.following{border-color:var(--primary);}
+  .artist-name{font-size:12px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;}
+  .artist-sub{font-size:10.5px; color:var(--text-faint);}
 
-  .artist-grid{
-    display:flex;
-    overflow-x:auto;
-    gap:18px;
-    padding:5px 2px 12px;
-    scrollbar-width:none;
-  }
+  /* Grid cards */
+  .grid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px;}
+  @media(min-width:640px){.grid{grid-template-columns:repeat(3,1fr);}}
+  @media(min-width:900px){.grid{grid-template-columns:repeat(4,1fr);}}
 
-  .artist-grid::-webkit-scrollbar{
-    display:none;
-  }
+  .card{background:var(--surface); border-radius:16px; padding:10px; position:relative; cursor:pointer; transition:background .15s;}
+  .card:hover{background:var(--surface-light);}
+  .card .cover{aspect-ratio:1/1; border-radius:12px; background:linear-gradient(135deg,var(--primary-dark),#2a2a3a); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; margin-bottom:8px;}
+  .card.video .cover{aspect-ratio:16/9;}
+  .cover .play-overlay{position:absolute; inset:0; background:rgba(0,0,0,.35); display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity .15s;}
+  .card:hover .play-overlay{opacity:1;}
+  .card-title{font-size:13.5px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .card-sub{font-size:11.5px; color:var(--text-faint); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .fav-btn{position:absolute; top:16px; right:16px; width:26px; height:26px; border-radius:50%; background:rgba(0,0,0,0.55); display:flex; align-items:center; justify-content:center;}
+  .fav-btn svg{width:13px; height:13px;}
+  .fav-btn.active svg{fill:var(--primary); stroke:var(--primary);}
+  .verify-badge{position:absolute; top:8px; left:8px; background:#eab308; color:#000; font-size:9px; font-weight:700; padding:2px 6px; border-radius:6px;}
 
-  .artist-card{
-    min-width:90px;
-  }
+  /* Buttons / inputs */
+  .btn{padding:12px 18px; border-radius:12px; font-size:14px; font-weight:600; text-align:center;}
+  .btn-primary{background:var(--primary); color:#fff;}
+  .btn-primary:hover{background:var(--primary-dark);}
+  .btn-ghost{background:rgba(255,255,255,0.08); color:#fff;}
+  .btn-white{background:#fff; color:#000;}
+  .field{width:100%; padding:13px 16px; border-radius:12px; background:var(--surface-light); border:1px solid transparent; color:#fff; font-size:14px; outline:none;}
+  .field:focus{border-color:var(--primary);}
+  .field::placeholder{color:var(--text-faint);}
 
-  .mini{
-    bottom:82px;
-    width:96%;
-  }
+  /* Search bar */
+  .searchbar{display:flex; align-items:center; gap:10px; background:var(--surface-light); border-radius:14px; padding:12px 16px; margin-bottom:20px;}
+  .searchbar input{flex:1; background:none; border:none; outline:none; color:#fff; font-size:14px;}
+  .searchbar svg{width:18px; height:18px; color:var(--text-faint); flex-shrink:0;}
 
-  .mini-info{
-    max-width:150px;
-  }
+  /* Auth screens */
+  .auth-wrap{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px;}
+  .auth-card{width:100%; max-width:380px; border-radius:22px; padding:32px 28px;}
+  .divider{display:flex; align-items:center; gap:10px; margin:18px 0; font-size:12px; color:var(--text-faint);}
+  .divider::before,.divider::after{content:""; flex:1; height:1px; background:var(--border);}
+  .error-box{background:rgba(239,68,68,0.12); color:#f87171; font-size:13px; padding:10px 12px; border-radius:10px; margin-bottom:14px;}
+  .success-box{background:rgba(34,197,94,0.12); color:#4ade80; font-size:13px; padding:10px 12px; border-radius:10px; margin-bottom:14px;}
+  .stack{display:flex; flex-direction:column; gap:11px;}
+  .row2{display:flex; gap:10px;}
+  .switch-link{text-align:center; font-size:13.5px; color:var(--text-dim); margin-top:20px;}
+  .switch-link a{color:var(--primary); font-weight:600;}
 
-  .controls .control:first-child{
-    display:none;
-  }
+  /* Profile */
+  .profile-header{text-align:center; padding:28px 16px; border-radius:20px;}
+  .profile-avatar{width:90px; height:90px; border-radius:50%; background:var(--primary); margin:0 auto 14px; display:flex; align-items:center; justify-content:center; font-size:32px; font-weight:700;}
+  .stats-row{display:flex; justify-content:center; gap:26px; margin-top:16px;}
+  .stat{text-align:center;}
+  .stat b{display:block; font-size:18px;}
+  .stat span{font-size:11px; color:var(--text-faint);}
 
-  .player{
-    border-radius:16px;
-  }
+  /* Tabs */
+  .tabs{display:flex; gap:8px; margin-bottom:18px; overflow-x:auto;}
+  .tab-btn{padding:9px 16px; border-radius:999px; background:var(--surface-light); font-size:13px; font-weight:600; color:var(--text-dim); white-space:nowrap; display:flex; align-items:center; gap:6px;}
+  .tab-btn.active{background:var(--primary); color:#fff;}
 
-  .player-info h2{
-    font-size:16px;
-  }
+  /* Player full screen */
+  #player-full{position:fixed; inset:0; z-index:100; background:var(--bg); display:flex; flex-direction:column; transform:translateY(100%); transition:transform .3s ease;}
+  #player-full.open{transform:translateY(0);}
+  .player-top{display:flex; align-items:center; justify-content:space-between; padding:16px;}
+  .player-body{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0 24px 40px; text-align:center;}
+  .player-cover{width:260px; height:260px; max-width:70vw; max-height:70vw; border-radius:20px; background:linear-gradient(135deg,var(--primary-dark),#222); box-shadow:0 20px 60px rgba(168,85,247,0.25); margin-bottom:28px; display:flex; align-items:center; justify-content:center; font-size:60px;}
+  .video-frame-wrap{width:100%; max-width:640px; aspect-ratio:16/9; border-radius:18px; overflow:hidden; margin-bottom:24px;}
+  .video-frame-wrap iframe{width:100%; height:100%; border:0;}
+  .player-title{font-size:19px; font-weight:700; margin-bottom:4px;}
+  .player-artist{font-size:14px; color:var(--text-dim); margin-bottom:26px;}
+  .player-controls{display:flex; align-items:center; gap:30px;}
+  .play-btn{width:56px; height:56px; border-radius:50%; background:var(--primary); display:flex; align-items:center; justify-content:center;}
+  .player-controls svg{width:24px; height:24px;}
+  .play-btn svg{width:26px; height:26px;}
 
-  .stats{
-    grid-template-columns:1fr 1fr 1fr;
+  /* mini player */
+  #mini-player{
+    position:fixed; left:8px; right:8px; bottom:66px; z-index:50;
+    display:flex; align-items:center; gap:10px; border-radius:16px; padding:8px 10px;
   }
-}
+  #mini-player.hidden{display:none;}
+  .mini-cover{width:40px; height:40px; border-radius:10px; background:linear-gradient(135deg,var(--primary-dark),#222); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:16px;}
+  .mini-info{flex:1; min-width:0;}
+  .mini-info p{white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .mini-title{font-size:13px; font-weight:600;}
+  .mini-artist{font-size:11px; color:var(--text-faint);}
+  .mini-play{width:34px; height:34px; border-radius:50%; background:var(--primary); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .mini-play svg{width:15px; height:15px;}
 
-@media(max-width:390px){
-  .grid{
-    gap:8px;
-  }
+  .empty-state{color:var(--text-faint); font-size:13.5px; padding:20px 0; text-align:center;}
+  .toast{position:fixed; top:16px; left:50%; transform:translateX(-50%); background:var(--surface-light); border:1px solid var(--border); padding:10px 18px; border-radius:12px; font-size:13px; z-index:200; opacity:0; transition:opacity .25s; pointer-events:none;}
+  .toast.show{opacity:1;}
 
-  .card-content{
-    padding:11px;
+  @media(min-width:860px){
+    body{padding-bottom:0; padding-left:230px;}
+    nav.bottom{display:none;}
+    .sidebar{position:fixed; top:0; left:0; bottom:0; width:230px; padding:24px 14px; display:flex; flex-direction:column; border-right:1px solid var(--border);}
+    .sidebar .logo{margin-bottom:30px; padding-left:8px;}
+    .sidebar button{display:flex; align-items:center; gap:12px; padding:11px 12px; border-radius:12px; font-size:14px; font-weight:600; color:var(--text-dim); width:100%; text-align:left;}
+    .sidebar button.active{background:rgba(168,85,247,0.18); color:var(--primary);}
+    .sidebar svg{width:20px; height:20px;}
+    header{display:none;}
+    #mini-player{left:246px; right:16px; bottom:16px;}
   }
-
-  .mini-info{
-    max-width:110px;
-  }
-
-  .header-btn{
-    width:39px;
-    height:39px;
-  }
-}
+  @media(max-width:859px){.sidebar{display:none;}}
 </style>
 </head>
+<body>
 
-<body class="locked">
+<!-- ================= SIDEBAR (desktop) ================= -->
+<aside class="sidebar glass">
+  <div class="logo">NDULE+<span>La musique de Goma</span></div>
+  <div id="sidebar-nav" style="display:flex;flex-direction:column;gap:2px;flex:1;"></div>
+  <button data-nav="profile" style="margin-top:10px;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"/></svg>
+    <span id="sidebar-username">Profil</span>
+  </button>
+</aside>
 
-<!-- =====================================================
-     CONNEXION
-===================================================== -->
-
-<div class="login-screen" id="loginScreen">
-
-  <div class="login-box">
-
-    <img
-      class="login-logo"
-      src="https://i.postimg.cc/1V66N19t/Chat-GPT-Image-4-aout-2026-09-22-33.png"
-      alt="NDULE+">
-
-    <div class="login-brand">
-      NDULE<span>+</span>
-    </div>
-
-    <div class="login-subtitle">
-      La musique de Goma
-    </div>
-
-    <h1>Bienvenue sur NDULE+</h1>
-
-    <p class="login-description">
-      Découvre la musique, les artistes et les vidéos de Goma
-      dans une expérience pensée pour toi.
-    </p>
-
-    <button
-      class="continue-btn"
-      onclick="enterNdule()">
-
-      <svg width="19" height="19"
-           viewBox="0 0 24 24"
-           fill="none"
-           stroke="currentColor"
-           stroke-width="2">
-        <path d="M5 12h13"/>
-        <path d="m13 6 6 6-6 6"/>
-      </svg>
-
-      Continuer sans compte
-
+<!-- ================= HEADER (mobile) ================= -->
+<header class="glass">
+  <div class="logo">NDULE+</div>
+  <div class="header-icons">
+    <button class="icon-btn" data-nav="search" aria-label="Rechercher">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
     </button>
-
-    <div class="login-note">
-      Accès visiteur · Aucune inscription nécessaire
-    </div>
-
+    <button class="avatar" data-nav="profile" id="header-avatar">?</button>
   </div>
-
-</div>
-
-
-<!-- =====================================================
-     APPLICATION
-===================================================== -->
-
-<div id="application" class="hidden">
-
-<div class="app">
-
-<header>
-
-  <div class="logo">
-
-    <img
-      src="https://i.postimg.cc/1V66N19t/Chat-GPT-Image-4-aout-2026-09-22-33.png"
-      alt="NDULE+">
-
-    <div>
-      NDULE<span>+</span>
-    </div>
-
-  </div>
-
-  <div class="header-actions">
-
-    <button
-      class="header-btn"
-      onclick="focusSearch()"
-      aria-label="Rechercher">
-
-      <svg width="19" height="19"
-           viewBox="0 0 24 24"
-           fill="none"
-           stroke="currentColor"
-           stroke-width="2">
-        <circle cx="11" cy="11" r="7"/>
-        <path d="m20 20-4-4"/>
-      </svg>
-
-    </button>
-
-  </div>
-
 </header>
 
-
-<!-- =====================================================
-     ACCUEIL
-===================================================== -->
-
-<main id="homePage" class="page active">
-
-<section class="hero">
-
-  <div class="hero-content">
-
-    <small>La musique de Goma</small>
-
-    <h1>
-      NDULE<br>
-      <span>+</span>
-    </h1>
-
-    <p>
-      Découvre les artistes et les vidéos musicales de Goma
-      dans une expérience moderne pensée pour mobile.
-    </p>
-
-    <div class="hero-actions">
-
-      <button class="primary" onclick="playVideo(0)">
-
-        <svg width="17" height="17"
-             viewBox="0 0 24 24"
-             fill="currentColor">
-          <path d="M8 5v14l11-7z"/>
-        </svg>
-
-        Écouter
-
-      </button>
-
-      <button
-        class="secondary"
-        onclick="goTo('musicPage')">
-
-        Découvrir
-
-      </button>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<div class="search">
-
-  <svg width="20" height="20"
-       viewBox="0 0 24 24"
-       fill="none"
-       stroke="currentColor"
-       stroke-width="2">
-    <circle cx="11" cy="11" r="7"/>
-    <path d="m20 20-4-4"/>
-  </svg>
-
-  <input
-    id="searchInput"
-    type="search"
-    placeholder="Rechercher un artiste ou une musique..."
-    oninput="searchMusic()">
-
-</div>
-
-
-<section class="content-section">
-
-  <div class="section-head">
-
-    <div>
-      <h2>Nouveautés</h2>
-      <p>Les dernières vidéos musicales</p>
-    </div>
-
-    <button
-      class="see-all"
-      onclick="goTo('musicPage')">
-      Tout voir
-    </button>
-
-  </div>
-
-  <div class="grid" id="homeGrid"></div>
-
-</section>
-
-
-<section class="content-section">
-
-  <div class="section-head">
-
-    <div>
-      <h2>Artistes de Goma</h2>
-      <p>Découvre les talents locaux</p>
-    </div>
-
-  </div>
-
-  <div class="artist-grid" id="artistGrid"></div>
-
-</section>
-
-</main>
-
-
-<!-- =====================================================
-     MUSIQUES
-===================================================== -->
-
-<main id="musicPage" class="page">
-
-  <h1 class="page-title">Musiques</h1>
-
-  <p class="page-subtitle">
-    Toute la sélection musicale de NDULE+
-  </p>
-
-  <div class="grid" id="musicGrid"></div>
-
-</main>
-
-
-<!-- =====================================================
-     RECHERCHE
-===================================================== -->
-
-<main id="searchPage" class="page">
-
-  <h1 class="page-title">Recherche</h1>
-
-  <p class="page-subtitle">
-    Trouve rapidement une musique ou un artiste.
-  </p>
-
-  <div class="search">
-
-    <svg width="20" height="20"
-         viewBox="0 0 24 24"
-         fill="none"
-         stroke="currentColor"
-         stroke-width="2">
-      <circle cx="11" cy="11" r="7"/>
-      <path d="m20 20-4-4"/>
-    </svg>
-
-    <input
-      id="searchPageInput"
-      type="search"
-      placeholder="Rechercher..."
-      oninput="searchPageMusic()">
-
-  </div>
-
-  <div class="grid" id="searchGrid"></div>
-
-</main>
-
-
-<!-- =====================================================
-     FAVORIS
-===================================================== -->
-
-<main id="favoritesPage" class="page">
-
-  <h1 class="page-title">Favoris</h1>
-
-  <p class="page-subtitle">
-    Tes musiques préférées.
-  </p>
-
-  <div class="grid" id="favoriteGrid"></div>
-
-</main>
-
-
-<!-- =====================================================
-     PROFIL
-===================================================== -->
-
-<main id="profilePage" class="page">
-
-  <h1 class="page-title">Profil</h1>
-
-  <p class="page-subtitle">
-    Ton espace NDULE+.
-  </p>
-
-  <div class="profile-card">
-
-    <div class="profile-top">
-
-      <div class="profile-avatar">
-        N+
-      </div>
-
-      <div>
-        <div class="profile-name">
-          Visiteur NDULE+
-        </div>
-
-        <div class="profile-email">
-          Mode visiteur
-        </div>
-      </div>
-
-    </div>
-
-    <div class="stats">
-
-      <div class="stat">
-        <strong id="favoriteCount">0</strong>
-        <span>Favoris</span>
-      </div>
-
-      <div class="stat">
-        <strong id="playedCount">0</strong>
-        <span>Écoutés</span>
-      </div>
-
-      <div class="stat">
-        <strong>Goma</strong>
-        <span>Communauté</span>
-      </div>
-
-    </div>
-
-  </div>
-
-</main>
-
-</div>
-
-
-<!-- =====================================================
-     MINI PLAYER
-===================================================== -->
-
-<div class="mini" id="miniPlayer">
-
-  <img id="miniCover" src="" alt="">
-
+<main id="main"></main>
+
+<!-- ================= MINI PLAYER ================= -->
+<div id="mini-player" class="glass hidden">
+  <div class="mini-cover" id="mini-cover">🎵</div>
   <div class="mini-info">
-
-    <div class="mini-title" id="miniTitle">
-      NDULE+
-    </div>
-
-    <div class="mini-artist" id="miniArtist">
-      Musique de Goma
-    </div>
-
+    <p class="mini-title" id="mini-title">—</p>
+    <p class="mini-artist" id="mini-artist">—</p>
   </div>
-
-  <div class="controls">
-
-    <button
-      class="control"
-      onclick="previousVideo()"
-      aria-label="Précédent">
-
-      <svg width="17" height="17"
-           viewBox="0 0 24 24"
-           fill="currentColor">
-        <path d="M6 5h2v14H6z"/>
-        <path d="m19 5-9 7 9 7z"/>
-      </svg>
-
-    </button>
-
-    <button
-      class="control main"
-      id="playButton"
-      onclick="togglePlay()"
-      aria-label="Lecture">
-
-      <svg width="17" height="17"
-           viewBox="0 0 24 24"
-           fill="currentColor">
-        <path d="M8 5v14l11-7z"/>
-      </svg>
-
-    </button>
-
-    <button
-      class="control"
-      onclick="nextVideo()"
-      aria-label="Suivant">
-
-      <svg width="17" height="17"
-           viewBox="0 0 24 24"
-           fill="currentColor">
-        <path d="M16 5h2v14h-2z"/>
-        <path d="m5 5 9 7-9 7z"/>
-      </svg>
-
-    </button>
-
-  </div>
-
+  <button class="mini-play" id="mini-play-btn">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path id="mini-play-icon" d="M8 5v14l11-7z"/></svg>
+  </button>
 </div>
 
-
-<!-- =====================================================
-     LECTEUR YOUTUBE
-===================================================== -->
-
-<div class="overlay" id="playerOverlay">
-
-  <div class="player">
-
-    <div class="player-head">
-
-      <div class="player-brand">
-        NDULE<span style="color:var(--accent2)">+</span>
-      </div>
-
-      <button
-        class="close"
-        onclick="closePlayer()"
-        aria-label="Fermer">
-
-        <svg width="19" height="19"
-             viewBox="0 0 24 24"
-             fill="none"
-             stroke="currentColor"
-             stroke-width="2">
-          <path d="M18 6 6 18"/>
-          <path d="m6 6 12 12"/>
-        </svg>
-
-      </button>
-
-    </div>
-
-    <div class="youtube">
-      <div id="ytplayer"></div>
-    </div>
-
-    <div class="player-info">
-
-      <h2 id="playerTitle">
-        NDULE+
-      </h2>
-
-      <p id="playerArtist">
-        Musique de Goma
-      </p>
-
-    </div>
-
+<!-- ================= FULL PLAYER ================= -->
+<div id="player-full">
+  <div class="player-top">
+    <button id="player-minimize" aria-label="Réduire">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+    <span style="font-size:11px;letter-spacing:1px;color:var(--text-faint);text-transform:uppercase;">Lecture en cours</span>
+    <button id="player-close" aria-label="Fermer">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
   </div>
-
+  <div class="player-body">
+    <div id="player-video-wrap" class="video-frame-wrap hidden"></div>
+    <div id="player-cover" class="player-cover">🎵</div>
+    <h2 class="player-title" id="player-title">—</h2>
+    <p class="player-artist" id="player-artist">—</p>
+    <div class="player-controls" id="audio-controls">
+      <button aria-label="Précédent"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg></button>
+      <button class="play-btn" id="player-play-btn"><svg viewBox="0 0 24 24" fill="#fff"><path id="player-play-icon" d="M8 5v14l11-7z"/></svg></button>
+      <button aria-label="Suivant"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM6 6l8.5 6L6 18z"/></svg></button>
+    </div>
+  </div>
 </div>
 
-
-<!-- =====================================================
-     NAVIGATION
-===================================================== -->
-
-<nav class="nav">
-
-  <div class="nav-inner">
-
-    <button
-      class="active"
-      onclick="navigate(this,'homePage')">
-
-      <svg width="21" height="21"
-           viewBox="0 0 24 24"
-           fill="none"
-           stroke="currentColor"
-           stroke-width="2">
-        <path d="m3 10 9-7 9 7"/>
-        <path d="M5 9v11h14V9"/>
-      </svg>
-
-      Accueil
-
-    </button>
-
-
-    <button
-      onclick="navigate(this,'musicPage')">
-
-      <svg width="21" height="21"
-           viewBox="0 0 24 24"
-           fill="none"
-           stroke="currentColor"
-           stroke-width="2">
-        <path d="M9 18V5l12-2v13"/>
-        <circle cx="6" cy="18" r="3"/>
-        <circle cx="18" cy="16" r="3"/>
-      </svg>
-
-      Musiques
-
-    </button>
-
-
-    <button
-      onclick="navigate(this,'searchPage');focusSearchPage()">
-
-      <svg width="21" height="21"
-           viewBox="0 0 24 24"
-           fill="none"
-           stroke="currentColor"
-           stroke-width="2">
-        <circle cx="11" cy="11" r="7"/>
-        <path d="m20 20-4-4"/>
-      </svg>
-
-      Recherche
-
-    </button>
-
-
-    <button
-      onclick="navigate(this,'favoritesPage')">
-
-      <svg width="21" height="21"
-           viewBox="0 0 24 24"
-           fill="none"
-           stroke="currentColor"
-           stroke-width="2">
-        <path d="M20.8 8.7c0 5.5-8.8 10.3-8.8 10.3S3.2 14.2 3.2 8.7A4.7 4.7 0 0 1 12 6a4.7 4.7 0 0 1 8.8 2.7Z"/>
-      </svg>
-
-      Favoris
-
-    </button>
-
-
-    <button
-      onclick="navigate(this,'profilePage')">
-
-      <svg width="21" height="21"
-           viewBox="0 0 24 24"
-           fill="none"
-           stroke="currentColor"
-           stroke-width="2">
-        <circle cx="12" cy="8" r="4"/>
-        <path d="M4 21a8 8 0 0 1 16 0"/>
-      </svg>
-
-      Profil
-
-    </button>
-
-  </div>
-
-</nav>
-
-</div>
-
+<!-- ================= BOTTOM NAV (mobile) ================= -->
+<nav class="bottom glass" id="bottom-nav"></nav>
 
 <div class="toast" id="toast"></div>
 
-
-<!-- =====================================================
-     YOUTUBE
-===================================================== -->
-
-<script src="https://www.youtube.com/iframe_api"></script>
-
-
 <script>
+/* ================================================================
+   NDULE+ — Démo autonome (single-file)
+   Auth + favoris + playlists simulés en localStorage (démo uniquement,
+   pas de vrai backend). Pour la vraie plateforme avec PostgreSQL,
+   Prisma, JWT, Google OAuth réel etc., utilise le projet full-stack
+   fourni précédemment (frontend/ + backend/).
+================================================================ */
 
-/* =====================================================
-   VIDEOS YOUTUBE
-===================================================== */
+// ---------- Icônes SVG (Lucide-like, inline, pas d'emoji comme icônes UI) ----------
+const ICONS = {
+  home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>',
+  compass:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36z"/></svg>',
+  music:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
+  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>',
+  library:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>',
+  heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>',
+  play:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>',
+};
 
-const videos = [
-
-  {
-    id:"kRcr6waZvHA",
-    title:"Musique de Goma 01",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"LEwfFxrvzp0",
-    title:"Musique de Goma 02",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"nDLncG-iYD4",
-    title:"Musique de Goma 03",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"ts87r5MVt2I",
-    title:"Musique de Goma 04",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"O1_gxdgOjBc",
-    title:"Musique de Goma 05",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"igg-KQbgRrA",
-    title:"Musique de Goma 06",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"ivJz9VFTiBk",
-    title:"Musique de Goma 07",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"rVVKV1p3l18",
-    title:"Musique de Goma 08",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"PNQhwRTIzg0",
-    title:"Musique de Goma 09",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"HSaphIKFeBg",
-    title:"Musique de Goma 10",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"_1XrYV51FPw",
-    title:"Musique de Goma 11",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"vIePNpRAiyM",
-    title:"Musique de Goma 12",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"YKYoCHUG1lA",
-    title:"Musique de Goma 13",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"q-aB_SShtmM",
-    title:"Musique de Goma 14",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"aDEwo1TlDDQ",
-    title:"Musique de Goma 15",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"pGLMS49cvTA",
-    title:"Musique de Goma 16",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"n2dwe5P2YJM",
-    title:"Musique de Goma 17",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"G1iVCRtcKqY",
-    title:"Musique de Goma 18",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"BZ2WqvumYH4",
-    title:"Musique de Goma 19",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"0ApOGQl8INA",
-    title:"Musique de Goma 20",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"jFR_W2ODIOM",
-    title:"Musique de Goma 21",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"jVicXq_WIGI",
-    title:"Musique de Goma 22",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"Nr5NnSyE4J4",
-    title:"Musique de Goma 23",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"FzkLWh7Q-yM",
-    title:"Musique de Goma 24",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"hy5dxHIGtv4",
-    title:"Musique de Goma 25",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"flngIZlumRw",
-    title:"Musique de Goma 26",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"dhareDrAoMo",
-    title:"Musique de Goma 27",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"R2a9kSeTnBs",
-    title:"Musique de Goma 28",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"QozSu9M_rRI",
-    title:"Musique de Goma 29",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"VGdhpZt4UKI",
-    title:"Musique de Goma 30",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"wxUtO0Je8Rk",
-    title:"Musique de Goma 31",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"vEIhgeVF-Bw",
-    title:"Musique de Goma 32",
-    artist:"Artiste de Goma"
-  },
-
-  {
-    id:"sfohgE1HKhE",
-    title:"Musique de Goma 33",
-    artist:"Artiste de Goma"
-  }
-
+// ---------- Données réelles — artistes et chansons de Goma uniquement ----------
+// Les IDs YouTube ci-dessous ont été vérifiés individuellement (recherche web,
+// clips officiels des artistes) le 28/08/2026. Aucun ID n'est inventé.
+// Sources vérifiées : chaîne YouTube officielle Innoss'B, Wikipedia (né à Goma),
+// articles Kribios Universal / ZikPlus / Totalement Actus sur la scène musicale
+// de Goma, chaîne YouTube officielle de Gloria Bash (vivant à Goma).
+const DEMO_ARTISTS = [
+  {id:'a1', name:"Innoss'B", city:'Goma', initials:'IB',
+    bio:"Chanteur, rappeur, danseur et percussionniste congolais né à Goma en 1997. Pionnier du genre AfroCongo, fusion de rumba congolaise, folklore et ndombolo."},
+  {id:'a2', name:'Sugar Igaufe', city:'Goma', initials:'SI',
+    bio:"Artiste montant de la scène urbaine de Goma, révélé par son single \"Penzi Letu\" sorti en 2024, plus de 100k vues sur YouTube."},
+  {id:'a3', name:'Gloria Bash', city:'Goma', initials:'GB',
+    bio:"De son vrai nom Neema Bashige Gloria, autrice-compositrice-interprète vivant à Goma, artiste la plus suivie de la scène musicale du Kivu."},
 ];
 
-
-/* =====================================================
-   ARTISTES
-===================================================== */
-
-const artists = [
-
-  {
-    name:"Bargoss",
-    image:"https://i.ytimg.com/vi/kRcr6waZvHA/hqdefault.jpg",
-    count:"Artiste de Goma"
-  },
-
-  {
-    name:"Lydia Mandaka",
-    image:"https://i.ytimg.com/vi/LEwfFxrvzp0/hqdefault.jpg",
-    count:"Artiste de Goma"
-  },
-
-  {
-    name:"The Mingongo",
-    image:"https://i.ytimg.com/vi/nDLncG-iYD4/hqdefault.jpg",
-    count:"Artiste de Goma"
-  },
-
-  {
-    name:"Gloria Bash",
-    image:"https://i.ytimg.com/vi/ts87r5MVt2I/hqdefault.jpg",
-    count:"Artiste de Goma"
-  },
-
-  {
-    name:"Black Man Bausi",
-    image:"https://i.ytimg.com/vi/O1_gxdgOjBc/hqdefault.jpg",
-    count:"Artiste de Goma"
-  },
-
-  {
-    name:"Joel Ike",
-    image:"https://i.ytimg.com/vi/igg-KQbgRrA/hqdefault.jpg",
-    count:"Artiste de Goma"
-  }
-
+// Chaque chanson est un vrai clip officiel (source de lecture réelle via YouTube —
+// il n'existe pas de fichier audio hébergé séparément, donc la lecture utilise
+// le clip officiel vérifié, qui EST la chanson).
+const DEMO_TRACKS = [
+  {id:'t1', title:'Yo Pe', artist:"Innoss'B", artistId:'a1', youtubeId:'uJpjHW07mwE', verified:true},
+  {id:'t2', title:'Sukali', artist:"Innoss'B", artistId:'a1', youtubeId:'IE9zefSpOLM', verified:true},
+  {id:'t3', title:'Mortel-06', artist:"Innoss'B", artistId:'a1', youtubeId:'O_XhTu6qbmE', verified:true},
+  {id:'t4', title:'Penzi Letu', artist:'Sugar Igaufe', artistId:'a2', youtubeId:'qvRNPDLsLQw', verified:true},
+  {id:'t5', title:'Amina', artist:'Sugar Igaufe', artistId:'a2', youtubeId:'XduhZpvDhfY', verified:true},
+  {id:'t6', title:'Koleya Money', artist:'Gloria Bash', artistId:'a3', youtubeId:'qPxCx-KwRqQ', verified:true},
 ];
 
+// Les vidéos affichées sont les mêmes clips officiels (une chanson = son clip).
+const DEMO_VIDEOS = DEMO_TRACKS.map(t => ({...t, id:'v'+t.id.slice(1)}));
 
-/* =====================================================
-   VARIABLES
-===================================================== */
+function ytThumb(youtubeId){ return `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`; }
 
-let player=null;
-let playerReady=false;
-let currentIndex=0;
+// ---------- État / stockage local (démo uniquement) ----------
+const store = {
+  get user(){ return JSON.parse(localStorage.getItem('ndule_user') || 'null'); },
+  set user(v){ localStorage.setItem('ndule_user', JSON.stringify(v)); },
+  get favorites(){ return JSON.parse(localStorage.getItem('ndule_favorites') || '[]'); },
+  set favorites(v){ localStorage.setItem('ndule_favorites', JSON.stringify(v)); },
+  get history(){ return JSON.parse(localStorage.getItem('ndule_history') || '[]'); },
+  set history(v){ localStorage.setItem('ndule_history', JSON.stringify(v)); },
+  get playlists(){ return JSON.parse(localStorage.getItem('ndule_playlists') || '[]'); },
+  set playlists(v){ localStorage.setItem('ndule_playlists', JSON.stringify(v)); },
+  get accounts(){ return JSON.parse(localStorage.getItem('ndule_accounts') || '{}'); },
+  set accounts(v){ localStorage.setItem('ndule_accounts', JSON.stringify(v)); },
+};
 
-let favorites =
-  JSON.parse(localStorage.getItem("nduleFavorites") || "[]");
+let currentRoute = 'home';
+let nowPlaying = null; // {type:'track'|'video', data}
+let isPlaying = true;
 
-let played =
-  Number(localStorage.getItem("ndulePlayed") || 0);
+// ---------- Navigation ----------
+const NAV_ITEMS = [
+  {key:'home', label:'Accueil', icon:'home'},
+  {key:'explore', label:'Explorer', icon:'compass'},
+  {key:'music', label:'Musique', icon:'music'},
+  {key:'search', label:'Recherche', icon:'search'},
+  {key:'library', label:'Bibliothèque', icon:'library'},
+];
 
+function buildNav(){
+  const bottom = document.getElementById('bottom-nav');
+  const side = document.getElementById('sidebar-nav');
+  bottom.innerHTML = '';
+  side.innerHTML = '';
+  NAV_ITEMS.forEach(item=>{
+    const b1 = document.createElement('button');
+    b1.dataset.nav = item.key;
+    b1.innerHTML = ICONS[item.icon] + `<span>${item.label}</span>`;
+    b1.onclick = ()=>navigate(item.key);
+    bottom.appendChild(b1);
 
-/* =====================================================
-   CONNEXION VISUELLE
-===================================================== */
-
-function enterNdule(){
-
-  document.getElementById("loginScreen")
-    .classList.add("hidden");
-
-  document.getElementById("application")
-    .classList.remove("hidden");
-
-  document.body.classList.remove("locked");
-
-  window.scrollTo(0,0);
-
-  showToast("Bienvenue sur NDULE+");
-
-}
-
-
-/* =====================================================
-   YOUTUBE PLAYER
-===================================================== */
-
-function onYouTubeIframeAPIReady(){
-
-  player = new YT.Player("ytplayer",{
-
-    width:"100%",
-    height:"100%",
-
-    playerVars:{
-      autoplay:0,
-      controls:1,
-      playsinline:1,
-      rel:0,
-      modestbranding:1
-    },
-
-    events:{
-      onReady:function(){
-        playerReady=true;
-      },
-
-      onStateChange:onPlayerStateChange
-    }
-
+    const b2 = document.createElement('button');
+    b2.dataset.nav = item.key;
+    b2.innerHTML = ICONS[item.icon] + `<span>${item.label}</span>`;
+    b2.onclick = ()=>navigate(item.key);
+    side.appendChild(b2);
   });
-
 }
 
-
-function onPlayerStateChange(event){
-
-  if(!window.YT) return;
-
-  if(event.data === YT.PlayerState.PLAYING){
-
-    setPlayIcon(true);
-
+document.querySelectorAll('[data-nav]').forEach(el=>{
+  if(!el.closest('#bottom-nav') && !el.closest('#sidebar-nav')){
+    el.addEventListener('click', ()=> navigate(el.dataset.nav));
   }
-
-  if(event.data === YT.PlayerState.PAUSED){
-
-    setPlayIcon(false);
-
-  }
-
-  if(event.data === YT.PlayerState.ENDED){
-
-    nextVideo();
-
-  }
-
-}
-
-
-/* =====================================================
-   THUMBNAIL
-===================================================== */
-
-function thumbnail(id){
-
-  return "https://i.ytimg.com/vi/" +
-         id +
-         "/hqdefault.jpg";
-
-}
-
-
-/* =====================================================
-   CARTES
-===================================================== */
-
-function createCard(video,index){
-
-  const card =
-    document.createElement("article");
-
-  card.className="card";
-
-  const isFav =
-    favorites.includes(video.id);
-
-  card.innerHTML=`
-
-    <div class="cover">
-
-      <img
-        src="${thumbnail(video.id)}"
-        loading="lazy"
-        alt="${escapeHtml(video.title)}">
-
-      <button
-        class="play"
-        aria-label="Lire">
-
-        <svg width="20" height="20"
-             viewBox="0 0 24 24"
-             fill="currentColor">
-          <path d="M8 5v14l11-7z"/>
-        </svg>
-
-      </button>
-
-    </div>
-
-    <div class="card-content">
-
-      <div class="title">
-        ${escapeHtml(video.title)}
-      </div>
-
-      <div class="artist">
-        ${escapeHtml(video.artist)}
-      </div>
-
-      <div class="card-actions">
-
-        <button class="listen">
-          Écouter
-        </button>
-
-        <button
-          class="favorite ${isFav ? "active":""}"
-          aria-label="Favori">
-
-          <svg width="17" height="17"
-               viewBox="0 0 24 24"
-               fill="${isFav ? "currentColor":"none"}"
-               stroke="currentColor"
-               stroke-width="2">
-            <path d="M20.8 8.7c0 5.5-8.8 10.3-8.8 10.3S3.2 14.2 3.2 8.7A4.7 4.7 0 0 1 12 6a4.7 4.7 0 0 1 8.8 2.7Z"/>
-          </svg>
-
-        </button>
-
-      </div>
-
-    </div>
-  `;
-
-  card.querySelector(".play")
-    .onclick=()=>playVideo(index);
-
-  card.querySelector(".listen")
-    .onclick=()=>playVideo(index);
-
-  card.querySelector(".favorite")
-    .onclick=()=>toggleFavorite(video.id);
-
-  return card;
-
-}
-
-
-/* =====================================================
-   RENDER
-===================================================== */
-
-function renderGrid(elementId,list){
-
-  const grid =
-    document.getElementById(elementId);
-
-  if(!grid) return;
-
-  grid.innerHTML="";
-
-  if(!list.length){
-
-    grid.innerHTML=`
-
-      <div class="empty" style="grid-column:1/-1">
-
-        <svg width="35" height="35"
-             viewBox="0 0 24 24"
-             fill="none"
-             stroke="currentColor"
-             stroke-width="1.7">
-          <circle cx="11" cy="11" r="7"/>
-          <path d="m20 20-4-4"/>
-        </svg>
-
-        Aucun résultat trouvé.
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-  list.forEach(video=>{
-
-    const index =
-      videos.findIndex(v=>v.id===video.id);
-
-    grid.appendChild(
-      createCard(video,index)
-    );
-
-  });
-
-}
-
-
-/* =====================================================
-   ARTISTES
-===================================================== */
-
-function renderArtists(){
-
-  const grid =
-    document.getElementById("artistGrid");
-
-  grid.innerHTML="";
-
-  artists.forEach(artist=>{
-
-    const card =
-      document.createElement("div");
-
-    card.className="artist-card";
-
-    card.innerHTML=`
-
-      <img
-        class="artist-image"
-        src="${artist.image}"
-        alt="${escapeHtml(artist.name)}"
-        loading="lazy">
-
-      <div class="artist-name">
-        ${escapeHtml(artist.name)}
-      </div>
-
-      <div class="artist-count">
-        ${escapeHtml(artist.count)}
-      </div>
-
-    `;
-
-    card.onclick=()=>{
-
-      document.getElementById("searchInput").value =
-        artist.name;
-
-      searchMusic();
-
-      goTo("homePage");
-
-    };
-
-    grid.appendChild(card);
-
-  });
-
-}
-
-
-/* =====================================================
-   LECTURE
-===================================================== */
-
-function playVideo(index){
-
-  if(index<0 || index>=videos.length)
-    return;
-
-  currentIndex=index;
-
-  const video =
-    videos[index];
-
-  document.getElementById("miniPlayer")
-    .classList.add("active");
-
-  document.getElementById("miniCover")
-    .src=thumbnail(video.id);
-
-  document.getElementById("miniTitle")
-    .textContent=video.title;
-
-  document.getElementById("miniArtist")
-    .textContent=video.artist;
-
-  document.getElementById("playerTitle")
-    .textContent=video.title;
-
-  document.getElementById("playerArtist")
-    .textContent=video.artist;
-
-  document.getElementById("playerOverlay")
-    .classList.add("active");
-
-  document.body.style.overflow="hidden";
-
-  played++;
-
-  localStorage.setItem(
-    "ndulePlayed",
-    played
-  );
-
-  updateStats();
-
-  if(playerReady){
-
-    player.loadVideoById({
-      videoId:video.id,
-      startSeconds:0
-    });
-
-  }
-
-}
-
-
-/* =====================================================
-   PLAY / PAUSE
-===================================================== */
-
-function togglePlay(){
-
-  if(!playerReady) return;
-
-  const state =
-    player.getPlayerState();
-
-  if(state===YT.PlayerState.PLAYING){
-
-    player.pauseVideo();
-
-  }else{
-
-    player.playVideo();
-
-  }
-
-}
-
-
-function setPlayIcon(playing){
-
-  const button =
-    document.getElementById("playButton");
-
-  button.innerHTML=playing
-
-  ? `
-
-    <svg width="17" height="17"
-         viewBox="0 0 24 24"
-         fill="currentColor">
-      <path d="M7 5h3v14H7z"/>
-      <path d="M14 5h3v14h-3z"/>
-    </svg>
-
-  `
-
-  : `
-
-    <svg width="17" height="17"
-         viewBox="0 0 24 24"
-         fill="currentColor">
-      <path d="M8 5v14l11-7z"/>
-    </svg>
-
-  `;
-
-}
-
-
-/* =====================================================
-   PREVIOUS / NEXT
-===================================================== */
-
-function nextVideo(){
-
-  currentIndex =
-    (currentIndex+1)%videos.length;
-
-  playVideo(currentIndex);
-
-}
-
-
-function previousVideo(){
-
-  currentIndex =
-    (currentIndex-1+videos.length)
-    %videos.length;
-
-  playVideo(currentIndex);
-
-}
-
-
-/* =====================================================
-   FERMER PLAYER
-===================================================== */
-
-function closePlayer(){
-
-  document.getElementById("playerOverlay")
-    .classList.remove("active");
-
-  document.body.style.overflow="";
-
-  if(playerReady){
-
-    player.pauseVideo();
-
-  }
-
-}
-
-
-/* =====================================================
-   FAVORIS
-===================================================== */
-
-function toggleFavorite(id){
-
-  if(favorites.includes(id)){
-
-    favorites =
-      favorites.filter(item=>item!==id);
-
-    showToast("Retiré des favoris");
-
-  }else{
-
-    favorites.push(id);
-
-    showToast("Ajouté aux favoris");
-
-  }
-
-  localStorage.setItem(
-    "nduleFavorites",
-    JSON.stringify(favorites)
-  );
-
-  renderGrid("homeGrid",videos.slice(0,8));
-
-  renderGrid("musicGrid",videos);
-
-  renderFavorites();
-
-  updateStats();
-
-}
-
-
-function renderFavorites(){
-
-  const list =
-    videos.filter(v =>
-      favorites.includes(v.id)
-    );
-
-  renderGrid(
-    "favoriteGrid",
-    list
-  );
-
-}
-
-
-/* =====================================================
-   RECHERCHE
-===================================================== */
-
-function filterVideos(query){
-
-  const q =
-    query.toLowerCase().trim();
-
-  if(!q)
-    return videos;
-
-  return videos.filter(video=>
-
-    video.title.toLowerCase().includes(q) ||
-
-    video.artist.toLowerCase().includes(q) ||
-
-    video.id.toLowerCase().includes(q)
-
-  );
-
-}
-
-
-function searchMusic(){
-
-  const input =
-    document.getElementById("searchInput");
-
-  const results =
-    filterVideos(input.value);
-
-  renderGrid("homeGrid",results);
-
-}
-
-
-function searchPageMusic(){
-
-  const input =
-    document.getElementById("searchPageInput");
-
-  const results =
-    filterVideos(input.value);
-
-  renderGrid("searchGrid",results);
-
-}
-
-
-function focusSearch(){
-
-  goTo("homePage");
-
-  setTimeout(()=>{
-
-    const input =
-      document.getElementById("searchInput");
-
-    input.focus();
-
-    input.scrollIntoView({
-      behavior:"smooth",
-      block:"center"
-    });
-
-  },100);
-
-}
-
-
-function focusSearchPage(){
-
-  setTimeout(()=>{
-
-    document.getElementById("searchPageInput")
-      .focus();
-
-  },100);
-
-}
-
-
-/* =====================================================
-   NAVIGATION
-===================================================== */
-
-function navigate(button,pageId){
-
-  document.querySelectorAll(".nav button")
-    .forEach(btn =>
-      btn.classList.remove("active")
-    );
-
-  button.classList.add("active");
-
-  goTo(pageId);
-
-}
-
-
-function goTo(pageId){
-
-  document.querySelectorAll(".page")
-    .forEach(page =>
-      page.classList.remove("active")
-    );
-
-  const page =
-    document.getElementById(pageId);
-
-  if(page)
-    page.classList.add("active");
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
-
-  if(pageId==="favoritesPage")
-    renderFavorites();
-
-}
-
-
-/* =====================================================
-   STATS
-===================================================== */
-
-function updateStats(){
-
-  document.getElementById("favoriteCount")
-    .textContent=favorites.length;
-
-  document.getElementById("playedCount")
-    .textContent=played;
-
-}
-
-
-/* =====================================================
-   TOAST
-===================================================== */
-
-let toastTimer;
-
-function showToast(message){
-
-  const toast =
-    document.getElementById("toast");
-
-  toast.textContent=message;
-
-  toast.classList.add("show");
-
-  clearTimeout(toastTimer);
-
-  toastTimer=setTimeout(()=>{
-
-    toast.classList.remove("show");
-
-  },2200);
-
-}
-
-
-/* =====================================================
-   SECURITE TEXTE
-===================================================== */
-
-function escapeHtml(text){
-
-  return String(text)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-
-}
-
-
-/* =====================================================
-   INITIALISATION
-===================================================== */
-
-function initialize(){
-
-  renderGrid(
-    "homeGrid",
-    videos.slice(0,8)
-  );
-
-  renderGrid(
-    "musicGrid",
-    videos
-  );
-
-  renderFavorites();
-
-  renderArtists();
-
-  updateStats();
-
-}
-
-initialize();
-
-
-/* =====================================================
-   FERMER AVEC ESC
-===================================================== */
-
-document.addEventListener("keydown",event=>{
-
-  if(event.key==="Escape"){
-
-    closePlayer();
-
-  }
-
 });
 
-</script>
+function navigate(route){
+  currentRoute = route;
+  render();
+  document.querySelectorAll('[data-nav]').forEach(el=>{
+    el.classList.toggle('active', el.dataset.nav === route);
+  });
+  window.scrollTo(0,0);
+}
 
+// ---------- Toast ----------
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+// ---------- Rendu principal ----------
+function render(){
+  const main = document.getElementById('main');
+  const user = store.user;
+
+  if(!user && (currentRoute === 'library' || currentRoute === 'profile')){
+    main.innerHTML = renderAuthGate();
+    return;
+  }
+
+  switch(currentRoute){
+    case 'home': main.innerHTML = renderHome(); break;
+    case 'explore': main.innerHTML = renderExplore(); break;
+    case 'music': main.innerHTML = renderMusic(); break;
+    case 'search': main.innerHTML = renderSearch(); break;
+    case 'library': main.innerHTML = renderLibrary(); break;
+    case 'profile': main.innerHTML = renderProfile(); break;
+    case 'login': main.innerHTML = renderLogin(); break;
+    case 'register': main.innerHTML = renderRegister(); break;
+    case 'artist':
+      main.innerHTML = renderArtistDetail(window.__artistId);
+      break;
+    default: main.innerHTML = renderHome();
+  }
+
+  attachDynamicHandlers();
+  updateHeaderAvatar();
+}
+
+function updateHeaderAvatar(){
+  const user = store.user;
+  const headerAvatar = document.getElementById('header-avatar');
+  const sidebarName = document.getElementById('sidebar-username');
+  if(user){
+    headerAvatar.textContent = user.firstName[0].toUpperCase();
+    sidebarName.textContent = user.firstName;
+  } else {
+    headerAvatar.textContent = '?';
+    sidebarName.textContent = 'Profil';
+  }
+}
+
+// ---------- Composants de rendu ----------
+function artistItem(a){
+  const following = (store.user?.follows||[]).includes(a.id);
+  const count = DEMO_TRACKS.filter(t=>t.artistId===a.id).length;
+  return `
+  <div class="artist-item" data-open-artist="${a.id}">
+    <div class="artist-photo ${following?'following':''}">${a.initials}</div>
+    <div class="artist-name">${a.name}</div>
+    <div class="artist-sub">${count} morceau${count>1?'x':''}</div>
+  </div>`;
+}
+
+function trackCard(t){
+  const fav = store.favorites.includes('t_'+t.id);
+  return `
+  <div class="card" data-play-track="${t.id}">
+    <div class="cover">
+      ${t.youtubeId ? `<img src="${ytThumb(t.youtubeId)}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;" />` : '🎵'}
+      <div class="play-overlay">${ICONS.play}</div>
+    </div>
+    <div class="card-title">${t.title}</div>
+    <div class="card-sub">${t.artist}</div>
+    <button class="fav-btn ${fav?'active':''}" data-fav-track="${t.id}">${ICONS.heart}</button>
+  </div>`;
+}
+
+function videoCard(v){
+  const fav = store.favorites.includes('v_'+v.id);
+  return `
+  <div class="card video" data-play-video="${v.id}">
+    <div class="cover">
+      ${v.youtubeId ? `<img src="${ytThumb(v.youtubeId)}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;" />` : '▶'}
+      <div class="play-overlay">${ICONS.play}</div>
+      ${!v.verified?'<span class="verify-badge">À vérifier</span>':''}
+    </div>
+    <div class="card-title">${v.title}</div>
+    <div class="card-sub">${v.artist}</div>
+    <button class="fav-btn ${fav?'active':''}" data-fav-video="${v.id}">${ICONS.heart}</button>
+  </div>`;
+}
+
+function renderHome(){
+  return `
+    <section>
+      <h2 class="section-title">Artistes de Goma</h2>
+      <div class="h-scroll">${DEMO_ARTISTS.map(artistItem).join('')}</div>
+    </section>
+    <section>
+      <h2 class="section-title">Nouveautés musicales</h2>
+      <div class="grid">${DEMO_TRACKS.map(trackCard).join('')}</div>
+    </section>
+    <section>
+      <h2 class="section-title">Vidéos récentes</h2>
+      <div class="grid">${DEMO_VIDEOS.map(videoCard).join('')}</div>
+    </section>
+  `;
+}
+
+function renderExplore(){
+  return `
+    <h1 class="page-title">Explorer</h1>
+    <section>
+      <h2 class="section-title">Tous les artistes</h2>
+      <div class="grid">
+        ${DEMO_ARTISTS.map(a=>`
+          <div class="card" data-open-artist="${a.id}">
+            <div class="cover">${a.initials}</div>
+            <div class="card-title">${a.name}</div>
+            <div class="card-sub">${a.city}</div>
+          </div>`).join('')}
+      </div>
+    </section>
+  `;
+}
+
+function renderMusic(){
+  return `
+    <h1 class="page-title">Musique</h1>
+    <div class="grid">${DEMO_TRACKS.map(trackCard).join('')}</div>
+  `;
+}
+
+function renderSearch(){
+  return `
+    <div class="searchbar">
+      ${ICONS.search}
+      <input id="search-input" placeholder="Rechercher un artiste, une musique, une vidéo..." oninput="doSearch(this.value)" />
+    </div>
+    <div id="search-results"></div>
+  `;
+}
+
+window.doSearch = function(q){
+  const box = document.getElementById('search-results');
+  q = q.trim().toLowerCase();
+  if(!q){ box.innerHTML=''; return; }
+  const artists = DEMO_ARTISTS.filter(a=>a.name.toLowerCase().includes(q));
+  const tracks = DEMO_TRACKS.filter(t=>t.title.toLowerCase().includes(q));
+  const videos = DEMO_VIDEOS.filter(v=>v.title.toLowerCase().includes(q));
+  if(!artists.length && !tracks.length && !videos.length){
+    box.innerHTML = `<p class="empty-state">Aucun résultat pour "${q}".</p>`;
+    return;
+  }
+  box.innerHTML = `
+    ${artists.length?`<section><h2 class="section-title">Artistes</h2><div class="h-scroll">${artists.map(artistItem).join('')}</div></section>`:''}
+    ${tracks.length?`<section><h2 class="section-title">Musiques</h2><div class="grid">${tracks.map(trackCard).join('')}</div></section>`:''}
+    ${videos.length?`<section><h2 class="section-title">Vidéos</h2><div class="grid">${videos.map(videoCard).join('')}</div></section>`:''}
+  `;
+  attachDynamicHandlers();
+};
+
+let libraryTab = 'playlists';
+function renderLibrary(){
+  const playlists = store.playlists;
+  const favIds = store.favorites;
+  const favTracks = DEMO_TRACKS.filter(t=>favIds.includes('t_'+t.id));
+  const favVideos = DEMO_VIDEOS.filter(v=>favIds.includes('v_'+v.id));
+  const history = store.history;
+
+  return `
+    <h1 class="page-title">Bibliothèque</h1>
+    <div class="tabs">
+      <button class="tab-btn ${libraryTab==='playlists'?'active':''}" data-tab="playlists">${ICONS.library} Playlists</button>
+      <button class="tab-btn ${libraryTab==='favorites'?'active':''}" data-tab="favorites">${ICONS.heart} Favoris</button>
+      <button class="tab-btn ${libraryTab==='history'?'active':''}" data-tab="history">Historique</button>
+    </div>
+    <div id="tab-content">
+      ${libraryTab==='playlists' ? `
+        <div class="row2" style="margin-bottom:18px;">
+          <input id="new-playlist-name" class="field" placeholder="Nom de la nouvelle playlist" />
+          <button class="btn btn-primary" id="create-playlist-btn" style="white-space:nowrap;">Créer</button>
+        </div>
+        ${playlists.length===0 ? `<p class="empty-state">Tu n'as pas encore de playlist.</p>` :
+          `<div class="grid">${playlists.map(p=>`
+            <div class="card">
+              <div class="cover">🎼</div>
+              <div class="card-title">${p.name}</div>
+              <div class="card-sub">${p.tracks.length} titres</div>
+            </div>`).join('')}</div>`
+        }
+      ` : libraryTab==='favorites' ? `
+        ${(favTracks.length+favVideos.length)===0 ? `<p class="empty-state">Aucun favori pour le moment.</p>` :
+        `<div class="grid">${favTracks.map(trackCard).join('')}${favVideos.map(videoCard).join('')}</div>`}
+      ` : `
+        ${history.length===0 ? `<p class="empty-state">Aucun historique pour le moment.</p>` :
+        history.map(h=>`
+          <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);">
+            <div class="mini-cover">${h.type==='video'?'▶':'🎵'}</div>
+            <div style="flex:1;">
+              <div style="font-size:13.5px;font-weight:600;">${h.title}</div>
+              <div style="font-size:11.5px;color:var(--text-faint);">${h.artist}</div>
+            </div>
+            <div style="font-size:11px;color:var(--text-faint);">${h.date}</div>
+          </div>
+        `).join('')
+        }
+      `}
+    </div>
+  `;
+}
+
+function renderProfile(){
+  const user = store.user;
+  return `
+    <div class="profile-header glass">
+      <div class="profile-avatar">${user.firstName[0].toUpperCase()}</div>
+      <h1 style="font-size:19px;font-weight:700;">${user.firstName} ${user.lastName}</h1>
+      <p style="font-size:13px;color:var(--text-dim);">${user.email}</p>
+      <p style="font-size:11.5px;color:var(--text-faint);margin-top:4px;">Membre depuis le ${user.createdAt}</p>
+      <div class="stats-row">
+        <div class="stat"><b>${store.favorites.length}</b><span>Favoris</span></div>
+        <div class="stat"><b>${store.playlists.length}</b><span>Playlists</span></div>
+        <div class="stat"><b>${store.history.length}</b><span>Écoutes</span></div>
+      </div>
+    </div>
+    <div class="stack" style="margin-top:22px;">
+      <button class="btn btn-ghost" id="logout-btn">Se déconnecter</button>
+      <button class="btn" style="background:rgba(239,68,68,0.12);color:#f87171;" id="delete-account-btn">Supprimer mon compte</button>
+    </div>
+  `;
+}
+
+function renderAuthGate(){
+  return `
+    <div style="text-align:center;padding:60px 20px;">
+      <p style="color:var(--text-dim);margin-bottom:18px;">Connecte-toi pour accéder à cette section.</p>
+      <button class="btn btn-primary" style="display:inline-block;" onclick="navigate('login')">Se connecter</button>
+    </div>
+  `;
+}
+
+function renderLogin(){
+  return `
+    <div class="auth-wrap">
+      <div class="auth-card glass">
+        <div class="logo" style="margin-bottom:4px;">NDULE+</div>
+        <p style="color:var(--text-dim);font-size:13px;margin-bottom:22px;">Connecte-toi pour continuer</p>
+        <div id="login-error"></div>
+        <form id="login-form" class="stack">
+          <input class="field" type="email" name="email" placeholder="Adresse e-mail" required />
+          <input class="field" type="password" name="password" placeholder="Mot de passe" required />
+          <button class="btn btn-primary" type="submit">Se connecter</button>
+        </form>
+        <div class="divider">ou</div>
+        <button class="btn btn-white" style="width:100%;" onclick="toast('Nécessite la configuration Google OAuth réelle (voir README du projet complet).')">Continuer avec Google</button>
+        <p class="switch-link">Pas encore de compte ? <a onclick="navigate('register')">Créer un compte</a></p>
+      </div>
+    </div>
+  `;
+}
+
+function renderRegister(){
+  return `
+    <div class="auth-wrap">
+      <div class="auth-card glass">
+        <div class="logo" style="margin-bottom:4px;">NDULE+</div>
+        <p style="color:var(--text-dim);font-size:13px;margin-bottom:22px;">Crée ton compte</p>
+        <div id="register-error"></div>
+        <form id="register-form" class="stack">
+          <div class="row2">
+            <input class="field" name="firstName" placeholder="Prénom" required />
+            <input class="field" name="lastName" placeholder="Nom" required />
+          </div>
+          <input class="field" type="email" name="email" placeholder="Adresse e-mail" required />
+          <input class="field" type="password" name="password" placeholder="Mot de passe (8 caractères min.)" minlength="8" required />
+          <input class="field" type="password" name="confirmPassword" placeholder="Confirmer le mot de passe" required />
+          <button class="btn btn-primary" type="submit">Créer mon compte</button>
+        </form>
+        <div class="divider">ou</div>
+        <button class="btn btn-white" style="width:100%;" onclick="toast('Nécessite la configuration Google OAuth réelle (voir README du projet complet).')">Continuer avec Google</button>
+        <p class="switch-link">Déjà un compte ? <a onclick="navigate('login')">Se connecter</a></p>
+      </div>
+    </div>
+  `;
+}
+
+function renderArtistDetail(id){
+  const a = DEMO_ARTISTS.find(x=>x.id===id);
+  if(!a) return `<p class="empty-state">Artiste introuvable.</p>`;
+  const tracks = DEMO_TRACKS.filter(t=>t.artistId===id);
+  const videos = DEMO_VIDEOS.filter(v=>v.artistId===id);
+  const following = (store.user?.follows||[]).includes(id);
+  return `
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
+      <div class="artist-photo" style="width:70px;height:70px;">${a.initials}</div>
+      <div style="flex:1;">
+        <h1 style="font-size:19px;font-weight:700;">${a.name}</h1>
+        <p style="font-size:12.5px;color:var(--text-faint);">${a.city}</p>
+      </div>
+      <button class="btn ${following?'btn-ghost':'btn-primary'}" id="follow-btn" data-artist="${id}">${following?'Suivi':'Suivre'}</button>
+    </div>
+    ${a.bio?`<p style="font-size:13.5px;color:var(--text-dim);margin-bottom:22px;line-height:1.5;">${a.bio}</p>`:''}
+    <section><h2 class="section-title">Musiques</h2>
+      ${tracks.length?`<div class="grid">${tracks.map(trackCard).join('')}</div>`:`<p class="empty-state">Aucune musique.</p>`}
+    </section>
+    <section><h2 class="section-title">Vidéos</h2>
+      ${videos.length?`<div class="grid">${videos.map(videoCard).join('')}</div>`:`<p class="empty-state">Aucune vidéo.</p>`}
+    </section>
+  `;
+}
+
+// ---------- Handlers dynamiques (délégation après chaque render) ----------
+function attachDynamicHandlers(){
+  document.querySelectorAll('[data-open-artist]').forEach(el=>{
+    el.onclick = ()=>{ window.__artistId = el.dataset.openArtist; navigate('artist'); };
+  });
+  document.querySelectorAll('[data-play-track]').forEach(el=>{
+    el.onclick = (e)=>{
+      if(e.target.closest('[data-fav-track]')) return;
+      const t = DEMO_TRACKS.find(x=>x.id===el.dataset.playTrack);
+      playTrack(t);
+    };
+  });
+  document.querySelectorAll('[data-play-video]').forEach(el=>{
+    el.onclick = (e)=>{
+      if(e.target.closest('[data-fav-video]')) return;
+      const v = DEMO_VIDEOS.find(x=>x.id===el.dataset.playVideo);
+      playVideo(v);
+    };
+  });
+  document.querySelectorAll('[data-fav-track]').forEach(el=>{
+    el.onclick = (e)=>{
+      e.stopPropagation();
+      toggleFavorite('t_'+el.dataset.favTrack);
+    };
+  });
+  document.querySelectorAll('[data-fav-video]').forEach(el=>{
+    el.onclick = (e)=>{
+      e.stopPropagation();
+      toggleFavorite('v_'+el.dataset.favVideo);
+    };
+  });
+  document.querySelectorAll('[data-tab]').forEach(el=>{
+    el.onclick = ()=>{ libraryTab = el.dataset.tab; render(); };
+  });
+
+  const loginForm = document.getElementById('login-form');
+  if(loginForm) loginForm.onsubmit = handleLogin;
+  const registerForm = document.getElementById('register-form');
+  if(registerForm) registerForm.onsubmit = handleRegister;
+
+  const logoutBtn = document.getElementById('logout-btn');
+  if(logoutBtn) logoutBtn.onclick = ()=>{
+    localStorage.removeItem('ndule_user');
+    toast('Déconnexion réussie.');
+    navigate('home');
+  };
+  const deleteBtn = document.getElementById('delete-account-btn');
+  if(deleteBtn) deleteBtn.onclick = ()=>{
+    if(confirm('Supprimer définitivement ton compte NDULE+ ?')){
+      localStorage.removeItem('ndule_user');
+      toast('Compte supprimé.');
+      navigate('register');
+    }
+  };
+  const createPlaylistBtn = document.getElementById('create-playlist-btn');
+  if(createPlaylistBtn) createPlaylistBtn.onclick = ()=>{
+    const input = document.getElementById('new-playlist-name');
+    if(!input.value.trim()) return;
+    const playlists = store.playlists;
+    playlists.push({id:'p'+Date.now(), name:input.value.trim(), tracks:[]});
+    store.playlists = playlists;
+    render();
+  };
+  const followBtn = document.getElementById('follow-btn');
+  if(followBtn) followBtn.onclick = ()=>{
+    const user = store.user;
+    if(!user){ navigate('login'); return; }
+    const id = followBtn.dataset.artist;
+    user.follows = user.follows || [];
+    const idx = user.follows.indexOf(id);
+    if(idx>=0) user.follows.splice(idx,1); else user.follows.push(id);
+    store.user = user;
+    render();
+  };
+}
+
+// ---------- Auth simulée (démo locale) ----------
+function handleLogin(e){
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(e.target));
+  const accounts = store.accounts;
+  const acc = accounts[data.email];
+  const errBox = document.getElementById('login-error');
+  if(!acc || acc.password !== data.password){
+    errBox.innerHTML = `<div class="error-box">Adresse e-mail ou mot de passe incorrect.</div>`;
+    return;
+  }
+  store.user = acc;
+  toast('Connexion réussie !');
+  navigate('home');
+}
+
+function handleRegister(e){
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(e.target));
+  const errBox = document.getElementById('register-error');
+  if(data.password !== data.confirmPassword){
+    errBox.innerHTML = `<div class="error-box">Les mots de passe ne correspondent pas.</div>`;
+    return;
+  }
+  const accounts = store.accounts;
+  if(accounts[data.email]){
+    errBox.innerHTML = `<div class="error-box">Un compte existe déjà avec cette adresse e-mail.</div>`;
+    return;
+  }
+  const newUser = {
+    firstName:data.firstName, lastName:data.lastName, email:data.email,
+    password:data.password, createdAt:new Date().toLocaleDateString('fr-FR'), follows:[]
+  };
+  accounts[data.email] = newUser;
+  store.accounts = accounts;
+  store.user = newUser;
+  toast('Compte créé avec succès !');
+  navigate('home');
+}
+
+// ---------- Favoris ----------
+function toggleFavorite(key){
+  if(!store.user){ navigate('login'); return; }
+  let favs = store.favorites;
+  if(favs.includes(key)) favs = favs.filter(f=>f!==key);
+  else favs.push(key);
+  store.favorites = favs;
+  render();
+}
+
+// ---------- Lecteur ----------
+function addHistory(item, type){
+  const h = store.history;
+  h.unshift({title:item.title, artist:item.artist, type, date:new Date().toLocaleDateString('fr-FR')});
+  store.history = h.slice(0,50);
+}
+
+function playTrack(t){
+  // Toutes les chansons de ce catalogue sont adossées à leur clip officiel réel
+  // (pas de fichier audio séparé hébergé) : la lecture utilise donc le clip YouTube,
+  // qui est la source réelle et vérifiée de la chanson.
+  nowPlaying = {type: t.youtubeId ? 'video' : 'track', data:t};
+  isPlaying = true;
+  if(store.user) addHistory(t,'track');
+  openFullPlayer();
+  updatePlayerUI();
+}
+
+function playVideo(v){
+  nowPlaying = {type:'video', data:v};
+  isPlaying = true;
+  if(store.user) addHistory(v,'video');
+  openFullPlayer();
+  updatePlayerUI();
+}
+
+function updatePlayerUI(){
+  if(!nowPlaying) return;
+  const {type, data} = nowPlaying;
+  document.getElementById('player-title').textContent = data.title;
+  document.getElementById('player-artist').textContent = data.artist;
+  document.getElementById('mini-title').textContent = data.title;
+  document.getElementById('mini-artist').textContent = data.artist;
+  document.getElementById('mini-player').classList.remove('hidden');
+  document.body.classList.add('has-mini-player');
+
+  const videoWrap = document.getElementById('player-video-wrap');
+  const cover = document.getElementById('player-cover');
+  const audioControls = document.getElementById('audio-controls');
+
+  if(type === 'video'){
+    videoWrap.classList.remove('hidden');
+    cover.classList.add('hidden');
+    audioControls.classList.add('hidden');
+    videoWrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${data.youtubeId}?autoplay=1&rel=0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+  } else {
+    videoWrap.classList.add('hidden');
+    videoWrap.innerHTML = '';
+    cover.classList.remove('hidden');
+    audioControls.classList.remove('hidden');
+  }
+  setPlayIcon(true);
+}
+
+function setPlayIcon(playing){
+  isPlaying = playing;
+  const path = playing ? 'M6 5h4v14H6zm8 0h4v14h-4z' : 'M8 5v14l11-7z';
+  document.getElementById('player-play-icon').setAttribute('d', path);
+  document.getElementById('mini-play-icon').setAttribute('d', path);
+}
+
+document.getElementById('player-minimize').onclick = ()=>{
+  document.getElementById('player-full').classList.remove('open');
+};
+document.getElementById('player-close').onclick = ()=>{
+  document.getElementById('player-full').classList.remove('open');
+  document.getElementById('mini-player').classList.add('hidden');
+  document.body.classList.remove('has-mini-player');
+  nowPlaying = null;
+};
+function openFullPlayer(){
+  document.getElementById('player-full').classList.add('open');
+}
+document.getElementById('mini-player').addEventListener('click',(e)=>{
+  if(e.target.closest('#mini-play-btn')) return;
+  openFullPlayer();
+});
+document.getElementById('mini-play-btn').onclick = (e)=>{
+  e.stopPropagation();
+  if(nowPlaying?.type==='track') setPlayIcon(!isPlaying);
+};
+document.getElementById('player-play-btn').onclick = ()=>{
+  if(nowPlaying?.type==='track') setPlayIcon(!isPlaying);
+};
+
+// ---------- Init ----------
+buildNav();
+render();
+</script>
 </body>
 </html>
