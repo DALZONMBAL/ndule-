@@ -12,25 +12,63 @@
     --primary:#a855f7; --primary-dark:#7e22ce; --primary-light:#d8b4fe;
     --text:#ffffff; --text-dim:rgba(255,255,255,0.5); --text-faint:rgba(255,255,255,0.3);
     --border:rgba(255,255,255,0.07);
+    --ease:cubic-bezier(.22,1,.36,1);
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   html,body{height:100%;}
+  html{scroll-behavior:smooth;}
   body{
     background:var(--bg); color:var(--text);
     font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
     -webkit-tap-highlight-color:transparent; overscroll-behavior-y:none;
     padding-bottom:70px;
+    position:relative;
   }
   a{color:inherit; text-decoration:none;}
-  button{font-family:inherit; cursor:pointer; border:none; background:none; color:inherit;}
+  button{font-family:inherit; cursor:pointer; border:none; background:none; color:inherit; position:relative; overflow:hidden;}
   input{font-family:inherit;}
   ::-webkit-scrollbar{width:6px; height:6px;}
   ::-webkit-scrollbar-thumb{background:var(--primary-dark); border-radius:999px;}
+  ::selection{background:var(--primary); color:#fff;}
+
+  /* Fond ambiant animé (immersion) */
+  .ambient-glow{position:fixed; inset:0; z-index:-1; overflow:hidden; pointer-events:none;}
+  .ambient-glow span{
+    position:absolute; border-radius:50%; filter:blur(80px); opacity:.18;
+    animation:drift 22s ease-in-out infinite alternate;
+  }
+  .ambient-glow span:nth-child(1){width:340px;height:340px; background:var(--primary); top:-80px; left:-60px; animation-duration:26s;}
+  .ambient-glow span:nth-child(2){width:280px;height:280px; background:#7e22ce; bottom:-60px; right:-40px; animation-duration:20s; animation-delay:-6s;}
+  .ambient-glow span:nth-child(3){width:220px;height:220px; background:#d8b4fe; top:40%; left:60%; animation-duration:30s; animation-delay:-12s;}
+  @keyframes drift{
+    0%{transform:translate(0,0) scale(1);}
+    100%{transform:translate(40px,30px) scale(1.15);}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .ambient-glow span{animation:none;}
+    html{scroll-behavior:auto;}
+  }
+
+  /* Ripple (bouton pro) */
+  .ripple{position:absolute; border-radius:50%; background:rgba(255,255,255,0.35); transform:scale(0); animation:ripple-anim .55s ease-out forwards; pointer-events:none;}
+  @keyframes ripple-anim{ to{ transform:scale(2.6); opacity:0; } }
+
+  /* Transition de page */
+  #main.page-transition{animation:pageIn .38s var(--ease);}
+  @keyframes pageIn{
+    from{opacity:0; transform:translateY(10px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  /* Révélation au scroll */
+  .reveal{opacity:0; transform:translateY(16px); transition:opacity .5s var(--ease), transform .5s var(--ease);}
+  .reveal.in-view{opacity:1; transform:translateY(0);}
 
   .glass{
     background:rgba(30,30,42,0.65);
     backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
     border:1px solid var(--border);
+    transition:background .25s, box-shadow .25s;
   }
 
   /* HEADER */
@@ -38,7 +76,9 @@
     position:sticky; top:0; z-index:30;
     display:flex; align-items:center; justify-content:space-between;
     padding:14px 16px;
+    transition:background .25s, box-shadow .25s, backdrop-filter .25s;
   }
+  header.scrolled{box-shadow:0 8px 24px rgba(0,0,0,0.35);}
   .logo{font-size:22px; font-weight:800; color:var(--primary); letter-spacing:-0.5px;}
   .logo span{font-size:10px; display:block; color:var(--text-faint); font-weight:400; letter-spacing:0;}
   .header-icons{display:flex; align-items:center; gap:14px;}
@@ -54,8 +94,12 @@
   nav.bottom button{
     display:flex; flex-direction:column; align-items:center; gap:3px;
     font-size:10.5px; color:var(--text-dim); padding:4px 10px; border-radius:10px;
+    transition:color .25s, transform .2s;
   }
+  nav.bottom button svg{transition:transform .3s cubic-bezier(.34,1.6,.64,1);}
   nav.bottom button.active{color:var(--primary);}
+  nav.bottom button.active svg{transform:translateY(-2px) scale(1.08);}
+  nav.bottom button:active{transform:scale(.92);}
   nav.bottom svg{width:22px; height:22px;}
 
   main{min-height:calc(100vh - 130px); padding:16px; padding-bottom:16px; transition:padding-bottom .15s;}
@@ -68,8 +112,10 @@
 
   /* Horizontal scroller (artists) */
   .h-scroll{display:flex; gap:18px; overflow-x:auto; padding-bottom:4px;}
-  .artist-item{display:flex; flex-direction:column; align-items:center; gap:6px; flex-shrink:0; width:84px; text-align:center;}
-  .artist-photo{width:78px; height:78px; border-radius:50%; background:var(--surface-light); display:flex; align-items:center; justify-content:center; font-size:26px; font-weight:700; color:var(--primary); overflow:hidden; border:2px solid transparent;}
+  .artist-item{display:flex; flex-direction:column; align-items:center; gap:6px; flex-shrink:0; width:84px; text-align:center; transition:transform .25s var(--ease); position:relative; overflow:hidden; border-radius:12px; padding:4px 0;}
+  .artist-item:hover{transform:translateY(-4px);}
+  .artist-photo{width:78px; height:78px; border-radius:50%; background:var(--surface-light); display:flex; align-items:center; justify-content:center; font-size:26px; font-weight:700; color:var(--primary); overflow:hidden; border:2px solid transparent; transition:box-shadow .25s, border-color .25s;}
+  .artist-item:hover .artist-photo{box-shadow:0 8px 22px rgba(168,85,247,0.35);}
   .artist-photo.following{border-color:var(--primary);}
   .artist-name{font-size:12px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;}
   .artist-sub{font-size:10.5px; color:var(--text-faint);}
@@ -79,27 +125,37 @@
   @media(min-width:640px){.grid{grid-template-columns:repeat(3,1fr);}}
   @media(min-width:900px){.grid{grid-template-columns:repeat(4,1fr);}}
 
-  .card{background:var(--surface); border-radius:16px; padding:10px; position:relative; cursor:pointer; transition:background .15s;}
-  .card:hover{background:var(--surface-light);}
+  .card{background:var(--surface); border-radius:16px; padding:10px; position:relative; overflow:hidden; cursor:pointer; transition:transform .3s var(--ease), background .2s, box-shadow .3s var(--ease);}
+  .card:hover{background:var(--surface-light); transform:translateY(-5px); box-shadow:0 14px 30px rgba(0,0,0,0.4);}
+  .card:active{transform:translateY(-2px) scale(.98);}
   .card .cover{aspect-ratio:1/1; border-radius:12px; background:linear-gradient(135deg,var(--primary-dark),#2a2a3a); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; margin-bottom:8px;}
+  .card .cover img{transition:transform .4s var(--ease);}
+  .card:hover .cover img{transform:scale(1.08);}
   .card.video .cover{aspect-ratio:16/9;}
-  .cover .play-overlay{position:absolute; inset:0; background:rgba(0,0,0,.35); display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity .15s;}
+  .cover .play-overlay{position:absolute; inset:0; background:rgba(0,0,0,.4); display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity .2s;}
+  .cover .play-overlay svg{width:34px; height:34px; transform:scale(.7); transition:transform .25s var(--ease);}
   .card:hover .play-overlay{opacity:1;}
+  .card:hover .play-overlay svg{transform:scale(1);}
   .card-title{font-size:13.5px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   .card-sub{font-size:11.5px; color:var(--text-faint); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-  .fav-btn{position:absolute; top:16px; right:16px; width:26px; height:26px; border-radius:50%; background:rgba(0,0,0,0.55); display:flex; align-items:center; justify-content:center;}
-  .fav-btn svg{width:13px; height:13px;}
+  .fav-btn{position:absolute; top:16px; right:16px; width:26px; height:26px; border-radius:50%; background:rgba(0,0,0,0.55); display:flex; align-items:center; justify-content:center; transition:background .2s;}
+  .fav-btn svg{width:13px; height:13px; transition:transform .3s cubic-bezier(.34,1.8,.64,1);}
   .fav-btn.active svg{fill:var(--primary); stroke:var(--primary);}
+  .fav-btn.pop svg{transform:scale(1.5);}
+  .fav-btn:hover{background:rgba(0,0,0,0.75);}
   .verify-badge{position:absolute; top:8px; left:8px; background:#eab308; color:#000; font-size:9px; font-weight:700; padding:2px 6px; border-radius:6px;}
 
   /* Buttons / inputs */
-  .btn{padding:12px 18px; border-radius:12px; font-size:14px; font-weight:600; text-align:center;}
-  .btn-primary{background:var(--primary); color:#fff;}
-  .btn-primary:hover{background:var(--primary-dark);}
+  .btn{padding:12px 18px; border-radius:12px; font-size:14px; font-weight:600; text-align:center; transition:transform .15s var(--ease), filter .2s, box-shadow .2s;}
+  .btn:active{transform:scale(.96);}
+  .btn-primary{background:var(--primary); color:#fff; box-shadow:0 4px 14px rgba(168,85,247,0.35);}
+  .btn-primary:hover{background:var(--primary-dark); box-shadow:0 6px 20px rgba(168,85,247,0.5);}
   .btn-ghost{background:rgba(255,255,255,0.08); color:#fff;}
+  .btn-ghost:hover{background:rgba(255,255,255,0.14);}
   .btn-white{background:#fff; color:#000;}
-  .field{width:100%; padding:13px 16px; border-radius:12px; background:var(--surface-light); border:1px solid transparent; color:#fff; font-size:14px; outline:none;}
-  .field:focus{border-color:var(--primary);}
+  .btn-white:hover{filter:brightness(.94);}
+  .field{width:100%; padding:13px 16px; border-radius:12px; background:var(--surface-light); border:1px solid transparent; color:#fff; font-size:14px; outline:none; transition:border-color .2s, box-shadow .2s;}
+  .field:focus{border-color:var(--primary); box-shadow:0 0 0 3px rgba(168,85,247,0.2);}
   .field::placeholder{color:var(--text-faint);}
 
   /* Search bar */
@@ -121,7 +177,11 @@
 
   /* Profile */
   .profile-header{text-align:center; padding:28px 16px; border-radius:20px;}
-  .profile-avatar{width:90px; height:90px; border-radius:50%; background:var(--primary); margin:0 auto 14px; display:flex; align-items:center; justify-content:center; font-size:32px; font-weight:700;}
+  .profile-avatar-wrap{position:relative; width:90px; height:90px; margin:0 auto 14px;}
+  .profile-avatar{width:90px; height:90px; border-radius:50%; background:var(--primary); display:flex; align-items:center; justify-content:center; font-size:32px; font-weight:700; overflow:hidden;}
+  .profile-avatar img{width:100%; height:100%; object-fit:cover;}
+  .avatar-upload-btn{position:absolute; bottom:0; right:0; width:30px; height:30px; border-radius:50%; background:var(--surface-light); border:2px solid var(--bg); display:flex; align-items:center; justify-content:center;}
+  .avatar-upload-btn svg{width:15px; height:15px;}
   .stats-row{display:flex; justify-content:center; gap:26px; margin-top:16px;}
   .stat{text-align:center;}
   .stat b{display:block; font-size:18px;}
@@ -180,6 +240,7 @@
 </style>
 </head>
 <body>
+<div class="ambient-glow"><span></span><span></span><span></span></div>
 
 <!-- ================= SIDEBAR (desktop) ================= -->
 <aside class="sidebar glass">
@@ -263,14 +324,18 @@ const ICONS = {
   library:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>',
   heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>',
   play:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>',
+  camera:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m20 6-11 11-5-5"/></svg>',
 };
 
 // ---------- Données réelles — artistes et chansons de Goma uniquement ----------
 // Les IDs YouTube ci-dessous ont été vérifiés individuellement (recherche web,
-// clips officiels des artistes) le 28/08/2026. Aucun ID n'est inventé.
-// Sources vérifiées : chaîne YouTube officielle Innoss'B, Wikipedia (né à Goma),
-// articles Kribios Universal / ZikPlus / Totalement Actus sur la scène musicale
-// de Goma, chaîne YouTube officielle de Gloria Bash (vivant à Goma).
+// chaînes/clips officiels des artistes) le 28/08/2026. Aucun ID n'est inventé.
+// IMPORTANT : je n'ai pas ajouté 500 artistes car cela n'existe pas de façon
+// vérifiable — inventer des noms/IDs aurait rendu le catalogue faux (liens morts,
+// fausses infos). Voici tous les artistes de Goma que j'ai pu vérifier avec de
+// vraies chansons/clips officiels réels. Ajoute-m'en d'autres (nom + lien YouTube)
+// et je les intègre de la même façon, vérifiés.
 const DEMO_ARTISTS = [
   {id:'a1', name:"Innoss'B", city:'Goma', initials:'IB',
     bio:"Chanteur, rappeur, danseur et percussionniste congolais né à Goma en 1997. Pionnier du genre AfroCongo, fusion de rumba congolaise, folklore et ndombolo."},
@@ -278,18 +343,58 @@ const DEMO_ARTISTS = [
     bio:"Artiste montant de la scène urbaine de Goma, révélé par son single \"Penzi Letu\" sorti en 2024, plus de 100k vues sur YouTube."},
   {id:'a3', name:'Gloria Bash', city:'Goma', initials:'GB',
     bio:"De son vrai nom Neema Bashige Gloria, autrice-compositrice-interprète vivant à Goma, artiste la plus suivie de la scène musicale du Kivu."},
+  {id:'a4', name:'Bargoss', city:'Goma', initials:'BG',
+    bio:"Artiste local de Goma révélé en 2023 avec des titres comme \"Kiba\", \"Même moral\" et \"Pente\", formé au Foyer Culturel de Goma."},
+  {id:'a5', name:"Stino Lanç'Art", city:'Goma', initials:'SL',
+    bio:"Chanteur et animateur énergétique de la scène gomatracienne, connu pour ses prestations créatives et dansantes."},
+  {id:'a6', name:'Magic Pinokio', city:'Goma', initials:'MP',
+    bio:"Artiste RnB/Afro-fusion de Goma actif depuis 2005, chante en anglais, français, lingala et swahili. Plusieurs prix dont Meilleure voix masculine du Kivu (KEMA Awards)."},
+  {id:'a7', name:'JKM Rambo', city:'Goma', initials:'JR',
+    bio:"Rappeur révolutionnaire engagé de Goma, connu pour son rap conscient et ses prestations remarquées au Festival Amani."},
 ];
 
 // Chaque chanson est un vrai clip officiel (source de lecture réelle via YouTube —
 // il n'existe pas de fichier audio hébergé séparément, donc la lecture utilise
-// le clip officiel vérifié, qui EST la chanson).
+// le clip officiel vérifié, qui EST la chanson). Tous les IDs ci-dessous ont été
+// vérifiés individuellement le 28/08/2026, aucun n'est inventé.
 const DEMO_TRACKS = [
+  // Innoss'B
   {id:'t1', title:'Yo Pe', artist:"Innoss'B", artistId:'a1', youtubeId:'uJpjHW07mwE', verified:true},
   {id:'t2', title:'Sukali', artist:"Innoss'B", artistId:'a1', youtubeId:'IE9zefSpOLM', verified:true},
   {id:'t3', title:'Mortel-06', artist:"Innoss'B", artistId:'a1', youtubeId:'O_XhTu6qbmE', verified:true},
-  {id:'t4', title:'Penzi Letu', artist:'Sugar Igaufe', artistId:'a2', youtubeId:'qvRNPDLsLQw', verified:true},
-  {id:'t5', title:'Amina', artist:'Sugar Igaufe', artistId:'a2', youtubeId:'XduhZpvDhfY', verified:true},
-  {id:'t6', title:'Koleya Money', artist:'Gloria Bash', artistId:'a3', youtubeId:'qPxCx-KwRqQ', verified:true},
+  {id:'t4', title:'Asalamalekum', artist:"Innoss'B", artistId:'a1', youtubeId:'0kORZD5mEDQ', verified:true},
+  {id:'t5', title:'Désormais (feat. Dany Synthé)', artist:"Innoss'B", artistId:'a1', youtubeId:'qgkWV0lNwnU', verified:true},
+  // Sugar Igaufe
+  {id:'t6', title:'Penzi Letu', artist:'Sugar Igaufe', artistId:'a2', youtubeId:'qvRNPDLsLQw', verified:true},
+  {id:'t7', title:'Amina', artist:'Sugar Igaufe', artistId:'a2', youtubeId:'XduhZpvDhfY', verified:true},
+  {id:'t8', title:'Party', artist:'Sugar Igaufe', artistId:'a2', youtubeId:'WshnV0wHkw0', verified:true},
+  {id:'t9', title:'Zarau', artist:'Sugar Igaufe', artistId:'a2', youtubeId:'0-x0Tp69xUM', verified:true},
+  // Gloria Bash
+  {id:'t10', title:'Koleya Money', artist:'Gloria Bash', artistId:'a3', youtubeId:'qPxCx-KwRqQ', verified:true},
+  {id:'t11', title:'Kazi Kwisha', artist:'Gloria Bash', artistId:'a3', youtubeId:'rsFZ9llQCDY', verified:true},
+  {id:'t12', title:'Love Taste', artist:'Gloria Bash', artistId:'a3', youtubeId:'3v0Eam18Zgk', verified:true},
+  {id:'t13', title:'Fiesta', artist:'Gloria Bash', artistId:'a3', youtubeId:'Nr5NnSyE4J4', verified:true},
+  {id:'t14', title:'Furaha (feat. TheMingongo)', artist:'Gloria Bash', artistId:'a3', youtubeId:'_1XrYV51FPw', verified:true},
+  {id:'t15', title:'Mabega', artist:'Gloria Bash', artistId:'a3', youtubeId:'POIuYnwVE_g', verified:true},
+  {id:'t16', title:'Amour Amour', artist:'Gloria Bash', artistId:'a3', youtubeId:'G1iVCRtcKqY', verified:true},
+  // Bargoss
+  {id:'t17', title:'Kiba', artist:'Bargoss', artistId:'a4', youtubeId:'-Y-OECPyiKA', verified:true},
+  {id:'t18', title:'Sha', artist:'Bargoss', artistId:'a4', youtubeId:'RqoqFa7XLUY', verified:true},
+  {id:'t19', title:'Ebeba', artist:'Bargoss', artistId:'a4', youtubeId:'pL9GSaLor2w', verified:true},
+  // Stino Lanç'Art
+  {id:'t20', title:'Kanisa (feat. Bargoss)', artist:"Stino Lanç'Art", artistId:'a5', youtubeId:'CBFdhawf-hs', verified:true},
+  {id:'t21', title:"Y'a Risque", artist:"Stino Lanç'Art", artistId:'a5', youtubeId:'WQaRUrOA688', verified:true},
+  {id:'t22', title:'Denda', artist:"Stino Lanç'Art", artistId:'a5', youtubeId:'Vmb-7s_tlvI', verified:true},
+  {id:'t23', title:'NakoPesa', artist:"Stino Lanç'Art", artistId:'a5', youtubeId:'6jt7MkK0t1A', verified:true},
+  {id:'t24', title:'I Love You (feat. Imperalia)', artist:"Stino Lanç'Art", artistId:'a5', youtubeId:'NLAPZKDwj10', verified:true},
+  {id:'t25', title:'Chérie Kitoko', artist:"Stino Lanç'Art", artistId:'a5', youtubeId:'pXFdNIpKnEU', verified:true},
+  {id:'t26', title:'Honorable (feat. Héritier Watanabe)', artist:"Stino Lanç'Art", artistId:'a5', youtubeId:'uiyUVldmwfA', verified:true},
+  {id:'t27', title:'Rêve', artist:"Stino Lanç'Art", artistId:'a5', youtubeId:'MdYSkr8ZZeg', verified:true},
+  // Magic Pinokio
+  {id:'t28', title:'Zonga', artist:'Magic Pinokio', artistId:'a6', youtubeId:'oP2c-0vcuZY', verified:true},
+  {id:'t29', title:'Deep Love', artist:'Magic Pinokio', artistId:'a6', youtubeId:'GAXASSbOKzw', verified:true},
+  // JKM Rambo
+  {id:'t30', title:'Ndoto', artist:'JKM Rambo', artistId:'a7', youtubeId:'d9ECUxzqOLs', verified:true},
 ];
 
 // Les vidéos affichées sont les mêmes clips officiels (une chanson = son clip).
@@ -394,6 +499,10 @@ function render(){
 
   attachDynamicHandlers();
   updateHeaderAvatar();
+  main.classList.remove('page-transition');
+  void main.offsetWidth; // force reflow pour rejouer l'animation
+  main.classList.add('page-transition');
+  observeReveals();
 }
 
 function updateHeaderAvatar(){
@@ -401,7 +510,9 @@ function updateHeaderAvatar(){
   const headerAvatar = document.getElementById('header-avatar');
   const sidebarName = document.getElementById('sidebar-username');
   if(user){
-    headerAvatar.textContent = user.firstName[0].toUpperCase();
+    headerAvatar.innerHTML = user.avatarPhoto
+      ? `<img src="${user.avatarPhoto}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />`
+      : user.firstName[0].toUpperCase();
     sidebarName.textContent = user.firstName;
   } else {
     headerAvatar.textContent = '?';
@@ -518,6 +629,7 @@ window.doSearch = function(q){
     ${videos.length?`<section><h2 class="section-title">Vidéos</h2><div class="grid">${videos.map(videoCard).join('')}</div></section>`:''}
   `;
   attachDynamicHandlers();
+  observeReveals();
 };
 
 let libraryTab = 'playlists';
@@ -572,9 +684,16 @@ function renderLibrary(){
 
 function renderProfile(){
   const user = store.user;
+  const avatarContent = user.avatarPhoto
+    ? `<img src="${user.avatarPhoto}" alt="" />`
+    : user.firstName[0].toUpperCase();
   return `
     <div class="profile-header glass">
-      <div class="profile-avatar">${user.firstName[0].toUpperCase()}</div>
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar">${avatarContent}</div>
+        <button class="avatar-upload-btn" id="avatar-upload-btn" aria-label="Changer la photo de profil">${ICONS.camera}</button>
+        <input type="file" id="avatar-file-input" accept="image/*" class="hidden" />
+      </div>
       <h1 style="font-size:19px;font-weight:700;">${user.firstName} ${user.lastName}</h1>
       <p style="font-size:13px;color:var(--text-dim);">${user.email}</p>
       <p style="font-size:11.5px;color:var(--text-faint);margin-top:4px;">Membre depuis le ${user.createdAt}</p>
@@ -692,13 +811,15 @@ function attachDynamicHandlers(){
   document.querySelectorAll('[data-fav-track]').forEach(el=>{
     el.onclick = (e)=>{
       e.stopPropagation();
-      toggleFavorite('t_'+el.dataset.favTrack);
+      el.classList.add('pop');
+      setTimeout(()=>toggleFavorite('t_'+el.dataset.favTrack), 220);
     };
   });
   document.querySelectorAll('[data-fav-video]').forEach(el=>{
     el.onclick = (e)=>{
       e.stopPropagation();
-      toggleFavorite('v_'+el.dataset.favVideo);
+      el.classList.add('pop');
+      setTimeout(()=>toggleFavorite('v_'+el.dataset.favVideo), 220);
     };
   });
   document.querySelectorAll('[data-tab]').forEach(el=>{
@@ -724,6 +845,35 @@ function attachDynamicHandlers(){
       navigate('register');
     }
   };
+  const avatarUploadBtn = document.getElementById('avatar-upload-btn');
+  const avatarFileInput = document.getElementById('avatar-file-input');
+  if(avatarUploadBtn && avatarFileInput){
+    avatarUploadBtn.onclick = ()=> avatarFileInput.click();
+    avatarFileInput.onchange = (e)=>{
+      const file = e.target.files[0];
+      if(!file) return;
+      if(!file.type.startsWith('image/')){
+        toast('Merci de choisir un fichier image.');
+        return;
+      }
+      if(file.size > 3 * 1024 * 1024){
+        toast('Image trop lourde (max 3 Mo).');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = ()=>{
+        const user = store.user;
+        user.avatarPhoto = reader.result; // stocké en base64 (démo locale)
+        const accounts = store.accounts;
+        if(accounts[user.email]) accounts[user.email] = user;
+        store.accounts = accounts;
+        store.user = user;
+        toast('Photo de profil mise à jour !');
+        render();
+      };
+      reader.readAsDataURL(file);
+    };
+  }
   const createPlaylistBtn = document.getElementById('create-playlist-btn');
   if(createPlaylistBtn) createPlaylistBtn.onclick = ()=>{
     const input = document.getElementById('new-playlist-name');
@@ -881,9 +1031,52 @@ document.getElementById('player-play-btn').onclick = ()=>{
   if(nowPlaying?.type==='track') setPlayIcon(!isPlaying);
 };
 
+// ---------- Effet ripple universel (délégation, pas de handler par bouton) ----------
+document.addEventListener('click', (e)=>{
+  const btn = e.target.closest('button, .card, .artist-item');
+  if(!btn) return;
+  const rect = btn.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height);
+  const ripple = document.createElement('span');
+  ripple.className = 'ripple';
+  ripple.style.width = ripple.style.height = size + 'px';
+  ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+  ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+  const prevPosition = getComputedStyle(btn).position;
+  if(prevPosition === 'static') btn.style.position = 'relative';
+  btn.appendChild(ripple);
+  ripple.addEventListener('animationend', ()=> ripple.remove());
+}, {passive:true});
+
+// ---------- Révélation au scroll (IntersectionObserver) ----------
+const revealObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('in-view');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, {threshold:0.1, rootMargin:'0px 0px -40px 0px'});
+
+function observeReveals(){
+  document.querySelectorAll('#main section, #main .card, #main .artist-item').forEach((el, i)=>{
+    if(el.classList.contains('in-view')) return;
+    el.classList.add('reveal');
+    el.style.transitionDelay = Math.min(i * 25, 300) + 'ms';
+    revealObserver.observe(el);
+  });
+}
+
+// ---------- Header dynamique au scroll ----------
+const headerEl = document.querySelector('header');
+window.addEventListener('scroll', ()=>{
+  headerEl.classList.toggle('scrolled', window.scrollY > 8);
+}, {passive:true});
+
 // ---------- Init ----------
 buildNav();
 render();
+observeReveals();
 </script>
 </body>
 </html>
