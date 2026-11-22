@@ -1,0 +1,16 @@
+{
+  "id": "./",
+  "name": "NDULE+ — La musique de Goma",
+  "short_name": "NDULE+",
+  "description": "Découvre la musique et les artistes de Goma et du Kivu.",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0d0d12",
+  "theme_color": "#0d0d12",
+  "icons": [
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
