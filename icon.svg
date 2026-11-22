@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<rect width="512" height="512" rx="112" fill="#0d0d12"/>
+<circle cx="256" cy="256" r="190" fill="#a855f7" opacity=".16"/>
+<path d="M170 350V162l178-30v188" fill="none" stroke="#d8b4fe" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="126" cy="354" rx="48" ry="34" fill="#a855f7"/>
+<ellipse cx="304" cy="324" rx="48" ry="34" fill="#a855f7"/>
+<path d="M170 212l178-30" stroke="#d8b4fe" stroke-width="24" stroke-linecap="round"/>
+<text x="256" y="454" font-family="Arial,sans-serif" font-size="54" font-weight="800" text-anchor="middle" fill="#fff">NDULE+</text>
+</svg>
