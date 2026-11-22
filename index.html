@@ -5,7 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#0d0d12" />
 <title>NDULE+ — La musique de Goma</title>
-<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiTkRVTEUrIiwic2hvcnRfbmFtZSI6Ik5EVUxFKyIsInN0YXJ0X3VybCI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjMGQwZDEyIiwidGhlbWVfY29sb3IiOiIjMGQwZDEyIn0=" />
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="icon" type="image/svg+xml" href="./icon.svg" />
+<link rel="apple-touch-icon" href="./icon.svg" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="NDULE+" />
 <style>
   :root{
     --bg:#0d0d12; --surface:#16161f; --surface-light:#1e1e2a;
@@ -238,6 +243,11 @@
   }
   @media(max-width:859px){.sidebar{display:none;}}
 </style>
+  <style>
+    .install-app-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 12px;border-radius:999px;background:var(--primary);color:#fff;font-size:12px;font-weight:700;white-space:nowrap}
+    .install-app-btn svg{width:16px;height:16px}
+    @media(max-width:420px){.install-app-btn span{display:none}.install-app-btn{width:36px;height:36px;justify-content:center;padding:0}}
+  </style>
 </head>
 <body>
 <div class="ambient-glow"><span></span><span></span><span></span></div>
@@ -250,6 +260,9 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"/></svg>
     <span id="sidebar-username">Profil</span>
   </button>
+  <button class="install-app-btn" id="install-app-btn-side" type="button" style="margin-top:12px;justify-content:center;">
+    <span>Installer NDULE+</span>
+  </button>
 </aside>
 
 <!-- ================= HEADER (mobile) ================= -->
@@ -260,6 +273,9 @@
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
     </button>
     <button class="avatar" data-nav="profile" id="header-avatar">?</button>
+    <button class="install-app-btn" id="install-app-btn" type="button" aria-label="Installer NDULE+">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m-5-5 5 5 5-5"/><path d="M5 17v3h14v-3"/></svg><span>Installer</span>
+    </button>
   </div>
 </header>
 
@@ -1077,6 +1093,40 @@ window.addEventListener('scroll', ()=>{
 buildNav();
 render();
 observeReveals();
+
+// ---------- PWA : installation et service worker ----------
+let deferredInstallPrompt = null;
+const installButtons = ['install-app-btn','install-app-btn-side']
+  .map(id => document.getElementById(id)).filter(Boolean);
+function showInstallHelp(){
+  if(window.matchMedia('(display-mode: standalone)').matches){
+    toast('NDULE+ est déjà installé.');
+    return;
+  }
+  toast('Sur Android : menu ⋮ du navigateur, puis « Installer l’application » ou « Ajouter à l’écran d’accueil ».');
+}
+installButtons.forEach(btn => btn.addEventListener('click', async () => {
+  if(!deferredInstallPrompt){ showInstallHelp(); return; }
+  deferredInstallPrompt.prompt();
+  const choice = await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+  if(choice && choice.outcome === 'accepted') toast('Installation de NDULE+ lancée.');
+}));
+window.addEventListener('beforeinstallprompt', event => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+});
+window.addEventListener('appinstalled', () => {
+  deferredInstallPrompt = null;
+  toast('NDULE+ est installé sur ton appareil.');
+});
+if('serviceWorker' in navigator && location.protocol === 'https:'){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js')
+      .then(() => console.info('NDULE+ : service worker actif'))
+      .catch(error => console.warn('Service worker non activé :', error));
+  });
+}
 </script>
 </body>
 </html>
