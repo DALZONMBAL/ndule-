@@ -218,6 +218,10 @@
     display:flex; align-items:center; gap:10px; border-radius:16px; padding:8px 10px;
   }
   #mini-player.hidden{display:none;}
+  .mini-video-wrap{display:none;width:112px;height:63px;flex:0 0 112px;border-radius:9px;overflow:hidden;background:#000}
+  .mini-video-wrap iframe{width:100%;height:100%;border:0}
+  #mini-player.has-mini-video .mini-video-wrap{display:block}
+  #mini-player.has-mini-video .mini-cover{display:none}
   .mini-cover{width:40px; height:40px; border-radius:10px; background:linear-gradient(135deg,var(--primary-dark),#222); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:16px;}
   .mini-info{flex:1; min-width:0;}
   .mini-info p{white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
@@ -283,6 +287,7 @@
 
 <!-- ================= MINI PLAYER ================= -->
 <div id="mini-player" class="glass hidden">
+  <div class="mini-video-wrap" id="mini-video-wrap" aria-label="Lecteur vidéo réduit"></div>
   <div class="mini-cover" id="mini-cover">🎵</div>
   <div class="mini-info">
     <p class="mini-title" id="mini-title">—</p>
@@ -1006,10 +1011,12 @@ function updatePlayerUI(){
     videoWrap.classList.remove('hidden');
     cover.classList.add('hidden');
     audioControls.classList.add('hidden');
-    videoWrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${data.youtubeId}?autoplay=1&rel=0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+    videoWrap.innerHTML = `<iframe title="NDULE+ — ${String(data.title).replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" src="https://www.youtube.com/embed/${encodeURIComponent(data.youtubeId)}?autoplay=1&playsinline=1&controls=1&rel=0&enablejsapi=1" allow="autoplay; encrypted-media; picture-in-picture; accelerometer; gyroscope; web-share" allowfullscreen></iframe>`;
+    document.getElementById('mini-player').classList.add('has-mini-video');
   } else {
     videoWrap.classList.add('hidden');
     videoWrap.innerHTML = '';
+    document.getElementById('mini-player').classList.remove('has-mini-video');
     cover.classList.remove('hidden');
     audioControls.classList.remove('hidden');
   }
@@ -1024,15 +1031,22 @@ function setPlayIcon(playing){
 }
 
 document.getElementById('player-minimize').onclick = ()=>{
+  const frame = document.querySelector('#player-video-wrap iframe');
+  if(frame) document.getElementById('mini-video-wrap').appendChild(frame);
   document.getElementById('player-full').classList.remove('open');
 };
 document.getElementById('player-close').onclick = ()=>{
   document.getElementById('player-full').classList.remove('open');
   document.getElementById('mini-player').classList.add('hidden');
+  document.getElementById('mini-player').classList.remove('has-mini-video');
+  document.getElementById('mini-video-wrap').innerHTML = '';
+  document.getElementById('player-video-wrap').innerHTML = '';
   document.body.classList.remove('has-mini-player');
   nowPlaying = null;
 };
 function openFullPlayer(){
+  const miniFrame = document.querySelector('#mini-video-wrap iframe');
+  if(miniFrame) document.getElementById('player-video-wrap').appendChild(miniFrame);
   document.getElementById('player-full').classList.add('open');
 }
 document.getElementById('mini-player').addEventListener('click',(e)=>{
